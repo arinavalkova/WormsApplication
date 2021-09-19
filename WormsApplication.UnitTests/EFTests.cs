@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using WormsApplication.behavior;
 using WormsApplication.data;
-using WormsApplication.data.entity;
+using WormsApplication.data.behavior.entity;
 using WormsApplication.services.generator.food;
 
 namespace WormsApplication.UnitTests
@@ -14,7 +14,7 @@ namespace WormsApplication.UnitTests
         public void BehaviorTest_AddBehavior_AddedBehavior()
         {
             var options = new DbContextOptionsBuilder<BehaviorContext>()
-                .UseInMemoryDatabase(databaseName: "Behaviors")
+                .UseInMemoryDatabase("Behaviors")
                 .Options;
             
             var worldBehaviorGenerator = new WorldBehaviorGenerator(new FoodGenerator(new Random()));
@@ -22,14 +22,14 @@ namespace WormsApplication.UnitTests
                 worldBehaviorGenerator.CoordsToString(worldBehaviorGenerator.Generate(100));
 
             using var context = new BehaviorContext(options);
-            var behavior = new Behavior
-            {
-                Name = "FirstWorld",
-                CoordsLine = behaviorLine
-            };
-
-            context.Behaviors.Add(behavior);
-            context.SaveChanges();
+            // var behavior = new Behaviors
+            // {
+            //     //name = "FirstWorld",
+            //     // = behaviorLine
+            // };
+            //
+            // context.Behaviors.Add(behavior);
+            // context.SaveChanges();
         }
     }
 }

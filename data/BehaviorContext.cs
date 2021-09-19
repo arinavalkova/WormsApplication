@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WormsApplication.data.entity;
+using WormsApplication.data.behavior.entity;
 
 namespace WormsApplication.data
 {
@@ -7,7 +7,9 @@ namespace WormsApplication.data
     {
         public BehaviorContext(DbContextOptions<BehaviorContext> options)
             : base(options)
-        { }
-        public DbSet<Behavior> Behaviors { get; set; }
+        {
+            Database.EnsureCreated();
+        }
+        public DbSet<Behaviors> Behaviors { get; set; }
     }
 }

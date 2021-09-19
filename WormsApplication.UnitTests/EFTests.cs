@@ -10,26 +10,21 @@ namespace WormsApplication.UnitTests
 {
     public class EFTests
     {
+        private string _behaviorLine;
         [Test]
-        public void BehaviorTest_AddBehavior_AddedBehavior()
+        public void BehaviorGenerateTest_NewBehavior_BehaviorInDatabase()
         {
-            var options = new DbContextOptionsBuilder<BehaviorContext>()
-                .UseInMemoryDatabase("Behaviors")
-                .Options;
-            
             var worldBehaviorGenerator = new WorldBehaviorGenerator(new FoodGenerator(new Random()));
-            var behaviorLine = 
-                worldBehaviorGenerator.CoordsToString(worldBehaviorGenerator.Generate(100));
+            _behaviorLine = worldBehaviorGenerator.CoordsToString(worldBehaviorGenerator.Generate(100));
+            using var context = new BehaviorContext();
+            context.Behaviors.Add(new Behaviors {Name = "name", CoordsLine = _behaviorLine});
+            context.SaveChanges();
+        }
 
-            using var context = new BehaviorContext(options);
-            // var behavior = new Behaviors
-            // {
-            //     //name = "FirstWorld",
-            //     // = behaviorLine
-            // };
-            //
-            // context.Behaviors.Add(behavior);
-            // context.SaveChanges();
+        [Test]
+        public void ReadingBehaviorTest_BehaviorInDatabase_ReadBehavior()
+        {
+            Assert.AreEqual(new BehaviorContext().Behaviors.Find("name")!.CoordsLine, _behaviorLine);
         }
     }
 }

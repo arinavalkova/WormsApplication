@@ -5,11 +5,10 @@ namespace WormsApplication.data
 {
     public class BehaviorContext : DbContext
     {
-        public BehaviorContext(DbContextOptions<BehaviorContext> options)
-            : base(options)
-        {
-            Database.EnsureCreated();
-        }
         public DbSet<Behaviors> Behaviors { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseInMemoryDatabase("Behaviors");
+        }
     }
 }

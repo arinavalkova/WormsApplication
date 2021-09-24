@@ -58,7 +58,7 @@ namespace WormsApplication
             var worm = GetWormById(id);
             var x = shiftX + worm.GetX();
             var y = shiftY + worm.GetY();
-            Console.WriteLine($"{x} {y}");
+            //Console.WriteLine($"{x} {y}");
             if (!IsCellNotWorm(x, y)) return NoVitality;
             worm.SetX(x);
             worm.SetY(y);

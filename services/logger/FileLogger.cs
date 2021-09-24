@@ -14,19 +14,23 @@ namespace WormsApplication.services.logger
         public void Log(World world)
         {
             var worms = world.GetWorms();
-            using var streamWriter = new StreamWriter(FilePath, true);
-            streamWriter.Write($"{world.GetWorms().Count}  Worms:[");
-            foreach (var worm in worms)
+            using (var streamWriter = new StreamWriter(FilePath, true))
             {
-                streamWriter.Write($"{worm.GetName()}-{worm.GetVitality()}({worm.GetX()},{worm.GetY()})");
+                streamWriter.Write($"{world.GetWorms().Count}  Worms:[");
+                foreach (var worm in worms)
+                {
+                    streamWriter.Write($"{worm.GetName()}-{worm.GetVitality()}({worm.GetX()},{worm.GetY()})");
+                }
+
+                var foods = world.GetFoods();
+                streamWriter.Write($"], Food:[");
+                foreach (var food in foods)
+                {
+                    streamWriter.Write($"({food.GetX()},{food.GetY()})");
+                }
+
+                streamWriter.WriteLine($"]");
             }
-            var foods = world.GetFoods();
-            streamWriter.Write($"], Food:[");
-            foreach (var food in foods)
-            {
-                streamWriter.Write($"({food.GetX()},{food.GetY()})");
-            }
-            streamWriter.WriteLine($"]");
         }
     }
 }

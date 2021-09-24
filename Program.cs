@@ -16,12 +16,12 @@ namespace WormsApplication
         private static string _connectionString =
             @"Server=localhost\SQLEXPRESS;Database=wormsDB;Trusted_Connection=True;";
         private static readonly SqlServerBehaviorContext ServerBehaviorContext = new(_connectionString);
-        private const string BehaviorName = "first";
-        public static void Main(string[] args)
+        private const string? BehaviorName = "first";
+        public static void Main()
         {
-            CreateHostBuilder(args).Build().Run();
-            //var generateWorldBehavior = new GenerateWorldBehavior(new FoodGenerator(new Random()), ServerBehaviorContext);
-            //generateWorldBehavior.Generate("first", 100);
+            //CreateHostBuilder(args).Build().Run();
+            var generateWorldBehavior = new WorldBehaviorSaver(new FoodGenerator(new Random()), ServerBehaviorContext);
+            generateWorldBehavior.Generate("second", 100);
         }
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
@@ -30,7 +30,7 @@ namespace WormsApplication
                 {
                     services.AddHostedService<WorldSimulatorService>();
                     services.AddScoped<IFoodGenerator, FoodGetter>(
-                        _ => new FoodGetter(new WorldBehaviorGetter(ServerBehaviorContext).Get(BehaviorName)));
+                        _ => new FoodGetter(BehaviorName, ServerBehaviorContext));
                     services.AddScoped<NamesGenerator>();
                     services.AddScoped(_ => new WayReader(ReadingWays.Game));
                     services.AddScoped<ILogger,FileLogger>();

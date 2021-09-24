@@ -1,8 +1,10 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NUnit.Framework;
-using WormsApplication.behavior;
 using WormsApplication.data;
+using WormsApplication.data.behavior;
 using WormsApplication.data.behavior.entity;
 using WormsApplication.services.generator.food;
 
@@ -10,21 +12,35 @@ namespace WormsApplication.UnitTests
 {
     public class EFTests
     {
-        private string _behaviorLine;
+        private List<Coord> _listOfCoords;
         [Test]
         public void BehaviorGenerateTest_NewBehavior_BehaviorInDatabase()
         {
+            var countOfMoves = 100;
             var worldBehaviorGenerator = new WorldBehaviorGenerator(new FoodGenerator(new Random()));
-            _behaviorLine = worldBehaviorGenerator.CoordsToString(worldBehaviorGenerator.Generate(100));
+            _listOfCoords = worldBehaviorGenerator.Generate(countOfMoves);
             using var context = new BehaviorContext();
-            context.Behaviors.Add(new Behaviors {Name = "name", CoordsLine = _behaviorLine});
+            EntityEntry<Behaviors> entityEntry = context.Behaviors.Add(new Behaviors {Name = "name"});
+            context.SaveChanges();
+            for (var i = 0; i < countOfMoves; i++)
+            {
+                context.Coords.Add(new Coords
+                    {BehaviorId = entityEntry.Entity.Id, Move = i, X = _listOfCoords[i].X, Y = _listOfCoords[i].Y}
+                );
+            }
             context.SaveChanges();
         }
 
         [Test]
         public void ReadingBehaviorTest_BehaviorInDatabase_ReadBehavior()
         {
-            Assert.AreEqual(new BehaviorContext().Behaviors.Find("name")!.CoordsLine, _behaviorLine);
+            var context = new BehaviorContext();
+            var behaviorId = context.Behaviors.FirstOrDefault(behavior => behavior.Name == "name")!.Id;
+            for (var i = 0; i < 100; i++)
+            {
+                var coord = context.Coords.FirstOrDefault(coords => coords.Move == i && coords.BehaviorId == behaviorId);
+                Assert.AreEqual(new Coord {X = coord!.X, Y = coord.Y}, _listOfCoords[i]);
+            }
         }
     }
 }

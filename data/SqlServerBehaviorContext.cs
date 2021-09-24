@@ -14,6 +14,7 @@ namespace WormsApplication.data
         }
 
         public DbSet<Behaviors> Behaviors { get; set; }
+        public DbSet<Coords> Coords { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

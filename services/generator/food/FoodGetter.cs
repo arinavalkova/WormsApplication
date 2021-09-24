@@ -1,21 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using WormsApplication.data;
+using WormsApplication.data.behavior.entity;
 
 namespace WormsApplication.services.generator.food
 {
     public class FoodGetter : IFoodGenerator
     {
-        private readonly List<Coord> _listCoords;
+        private int _currentMove = 0;
+        private readonly SqlServerBehaviorContext _serverBehaviorContext;
+        private readonly string _name;
 
-        public FoodGetter(List<Coord> listCoords)
+        public FoodGetter(string name, SqlServerBehaviorContext serverBehaviorContext)
         {
-            _listCoords = listCoords;
+            _serverBehaviorContext = serverBehaviorContext;
+            _name = name;
         }
 
         public Food Generate()
         {
-            var coord = _listCoords[0];
-            _listCoords.Remove(coord);
-            return new Food(coord.X, coord.Y);
+            var behaviorId = _serverBehaviorContext.Behaviors.FirstOrDefault(behaviors => behaviors.Name == _name)!.Id;
+            var coord = _serverBehaviorContext.Coords.FirstOrDefault(coords =>
+                coords.BehaviorId == behaviorId && coords.Move == _currentMove);
+            _currentMove++;
+            return new Food(coord!.X, coord.Y);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Text;
 using WormsApplication.services.generator.food;
 
-namespace WormsApplication.behavior
+namespace WormsApplication.data.behavior
 {
     public class WorldBehaviorGenerator
     {

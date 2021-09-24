@@ -20,5 +20,10 @@ namespace WormsApplication.data
         {
             optionsBuilder.UseSqlServer(_connectionString);
         }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Behaviors>().HasIndex((behavior => behavior.Name)).IsUnique();
+        }
     }
 }

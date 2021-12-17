@@ -5,25 +5,18 @@ namespace WormsApplication.data
 {
     public class SqlServerBehaviorContext : DbContext
     {
-        private string _connectionString;
-
-        public SqlServerBehaviorContext(string connectionString)
+        public SqlServerBehaviorContext(DbContextOptions<SqlServerBehaviorContext> options)
+            : base(options)
         {
-            _connectionString = connectionString;
             Database.EnsureCreated();
         }
 
         public DbSet<Behaviors> Behaviors { get; set; }
         public DbSet<Coords> Coords { get; set; }
-        
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_connectionString);
-        }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Behaviors>().HasIndex((behavior => behavior.Name)).IsUnique();
+            modelBuilder.Entity<Behaviors>().HasIndex(behavior => behavior.Name).IsUnique();
         }
     }
 }

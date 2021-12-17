@@ -19,5 +19,9 @@ namespace WormsApplication.services.generator.food
             _currentPosition++;
             return newFood;
         }
+
+        public void AddContext()
+        {
+        }
     }
 }

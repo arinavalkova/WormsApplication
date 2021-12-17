@@ -11,7 +11,8 @@ namespace WormsApplication.commands.reader
         {
             [ReadingWays.Circle] = new CircleReader(),
             [ReadingWays.NearestFood] = new NearestFoodReader(),
-            [ReadingWays.Game] = new GameReader()
+            [ReadingWays.Game] = new GameReader(),
+          //  [ReadingWays.Api] = new ApiReader()
         };
 
         private static readonly List<Commands> CircleCommandList = new()
@@ -66,5 +67,13 @@ namespace WormsApplication.commands.reader
                 return world.StartGame(id);
             }
         }
+        
+        // private class ApiReader : IReader
+        // {
+        //     public Commands Invoke(World world, int id)
+        //     {
+        //         
+        //     }
+        // }
     }
 }

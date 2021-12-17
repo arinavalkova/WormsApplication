@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using WormsApplication.data;
 using WormsApplication.data.behavior.entity;
 
@@ -7,7 +8,7 @@ namespace WormsApplication.services.generator.food
     public class FoodGetter : IFoodGenerator
     {
         private int _currentMove = 0;
-        private readonly SqlServerBehaviorContext _serverBehaviorContext;
+        private SqlServerBehaviorContext _serverBehaviorContext;
         private readonly string _name;
 
         public FoodGetter(string name, SqlServerBehaviorContext serverBehaviorContext)
@@ -19,8 +20,10 @@ namespace WormsApplication.services.generator.food
         public Food Generate()
         {
             var behaviorId = _serverBehaviorContext.Behaviors.FirstOrDefault(behaviors => behaviors.Name == _name)!.Id;
+            Console.WriteLine(_currentMove);
             var coord = _serverBehaviorContext.Coords.FirstOrDefault(coords =>
                 coords.BehaviorId == behaviorId && coords.Move == _currentMove);
+            Console.WriteLine(coord);
             _currentMove++;
             return new Food(coord!.X, coord.Y);
         }

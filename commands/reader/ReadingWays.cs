@@ -4,6 +4,7 @@
     {
         Circle,
         NearestFood,
-        Game
+        Game,
+        Api
     }
 }

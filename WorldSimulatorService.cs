@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -15,7 +16,7 @@ namespace WormsApplication
         private const int NumberOfMoves = 100;
         private const int CenterXCoord = 0;
         private const int CenterYCoord = 0;
-        
+
         private readonly World _world;
         private readonly CommandParser _commandParser;
         private readonly WayReader _wayReader;
@@ -27,7 +28,7 @@ namespace WormsApplication
             ILogger fileLogger,
             IHostApplicationLifetime appLifetime)
         {
-            _world = new World(foodGenerator, namesGenerator, 
+            _world = new World(foodGenerator, namesGenerator,
                 new List<Worm> {new(namesGenerator.Generate(), CenterXCoord, CenterYCoord)});
             _commandParser = new CommandParser(_world, fileLogger);
             _wayReader = wayReader;
@@ -43,10 +44,10 @@ namespace WormsApplication
                 {
                     while (!_commandParser.GetCommand(_wayReader.Walk(_world, id)).Invoke(id)) ;
                 }
-
                 _world.GenerateFood();
             }
         }
+
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _appLifetime.ApplicationStarted.Register(() =>
@@ -55,7 +56,7 @@ namespace WormsApplication
                 {
                     Start();
                     _appLifetime.StopApplication();
-                });
+                }, cancellationToken);
             });
             return Task.CompletedTask;
         }

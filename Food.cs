@@ -4,13 +4,14 @@
     {
         private readonly int _x;
         private readonly int _y;
-        private int _age;
+        private int _expiresIn;
+        private static readonly int MaxAge = 10;
 
         public Food(int x, int y)
         {
             _x = x;
             _y = y;
-            _age = 1;
+            _expiresIn = MaxAge;
         }
         public int GetX()
         {
@@ -24,12 +25,17 @@
 
         public int GetAge()
         {
-            return _age;
+            return MaxAge - _expiresIn;
         }
 
         public void IncreaseAge()
         {
-            _age++;
+            _expiresIn--;
+        }
+
+        public int GetExpiresIn()
+        {
+            return _expiresIn;
         }
     }
 }

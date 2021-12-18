@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WormsApplication.commands.parser;
+using WormsApplication.data.way;
 
 namespace WormsApplication.commands.reader
 {

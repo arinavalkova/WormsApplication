@@ -9,14 +9,20 @@
 
     <ItemGroup>
       <Compile Remove="WormsApplication.UnitTests\**" />
+      <Compile Remove="WebApplication\**" />
+      <Compile Remove="WormsWeb\**" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Remove="WormsApplication.UnitTests\**" />
+      <EmbeddedResource Remove="WebApplication\**" />
+      <EmbeddedResource Remove="WormsWeb\**" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="WormsApplication.UnitTests\**" />
+      <None Remove="WebApplication\**" />
+      <None Remove="WormsWeb\**" />
     </ItemGroup>
 
     <ItemGroup>

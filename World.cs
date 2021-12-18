@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WormsApplication.commands.parser;
+using WormsApplication.data.way;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 

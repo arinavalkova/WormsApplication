@@ -16,16 +16,13 @@ namespace WormsApplication
     {
         private static string _connectionString =
             @"Host=localhost;Port=5432;Database=wormsDB;Username=postgres;Password=westa";
-
         private const string? BehaviorName = "first";
-
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
             //var generateWorldBehavior = new WorldBehaviorSaver(new FoodGenerator(new Random()), ServerBehaviorContext);
             //generateWorldBehavior.Generate(BehaviorName, 101);
         }
-
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
@@ -37,7 +34,7 @@ namespace WormsApplication
                     services.AddSingleton<IFoodGenerator, FoodGetter>(
                         provider => new FoodGetter(BehaviorName, provider.GetService<SqlServerBehaviorContext>()));
                     services.AddSingleton<NamesGenerator>();
-                    services.AddSingleton(_ => new WayReader(ReadingWays.Game));
+                   // services.AddSingleton(_ => new WayReader(ReadingWays.Game));
                     services.AddSingleton<ILogger, FileLogger>();
                 });
         }

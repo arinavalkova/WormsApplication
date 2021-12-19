@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
-namespace WormsApplication
+namespace WormsApplication.entities
 {
-    public class Coord
+    public class Position
     {
-        public int X { init; get; }
-        public int Y { init; get; }
-
-        private bool Equals(Coord other)
+        [JsonPropertyName("x")]
+        public int X { get; init; }
+        [JsonPropertyName("y")]
+        public int Y { get; init; }
+        
+        private bool Equals(Position other)
         {
             return X == other.X && Y == other.Y;
         }
@@ -16,7 +19,7 @@ namespace WormsApplication
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Coord) obj);
+            return obj.GetType() == GetType() && Equals((Position) obj);
         }
 
         public override int GetHashCode()

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WormsApplication.behavior;
 using WormsApplication.commands.reader;
 using WormsApplication.data;
 using WormsApplication.data.behavior;
@@ -34,7 +33,7 @@ namespace WormsApplication
                     services.AddSingleton<IFoodGenerator, FoodGetter>(
                         provider => new FoodGetter(BehaviorName, provider.GetService<SqlServerBehaviorContext>()));
                     services.AddSingleton<NamesGenerator>();
-                   // services.AddSingleton(_ => new WayReader(ReadingWays.Game));
+                    //services.AddSingleton(_ => new WayReader(ReadingWays.Game));
                     services.AddSingleton<ILogger, FileLogger>();
                 });
         }

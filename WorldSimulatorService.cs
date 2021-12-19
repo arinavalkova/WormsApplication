@@ -20,7 +20,7 @@ namespace WormsApplication
 
         private readonly World _world;
         private readonly CommandParser _commandParser;
-      //  private readonly WayReader _wayReader;
+        private readonly WayReader _wayReader;
         private readonly IHostApplicationLifetime _appLifetime;
 
         public WorldSimulatorService(IFoodGenerator foodGenerator,
@@ -32,7 +32,7 @@ namespace WormsApplication
             _world = new World(foodGenerator, namesGenerator,
                 new List<Worm> {new(namesGenerator.Generate(), CenterXCoord, CenterYCoord)});
             _commandParser = new CommandParser(_world, fileLogger);
-           // _wayReader = wayReader;
+            //_wayReader = wayReader;
             _appLifetime = appLifetime;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using WormsApplication.commands;
+using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 using WormsApplication.services.logger;
@@ -17,8 +18,8 @@ namespace WormsApplication.UnitTests
             var world = new World(new MockFoodGenerator(), namesGenerator, new List<Worm> {worm});
             new CommandFactory(world, new MockLogger()).GenerateDownCommand().Invoke(1);
             var generatedWorm = world.GetWormById(2);
-            Assert.AreEqual(new Coord {X = generatedWorm.GetX(), Y = generatedWorm.GetY()},
-                new Coord {X = 0, Y = 1}
+            Assert.AreEqual(new Position {X = generatedWorm.GetX(), Y = generatedWorm.GetY()},
+                new Position {X = 0, Y = 1}
             );
         }
 

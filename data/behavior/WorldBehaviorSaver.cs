@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using WormsApplication.behavior;
 using WormsApplication.data.behavior.entity;
 using WormsApplication.services.generator.food;
 

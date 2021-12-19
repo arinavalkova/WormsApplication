@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using WormsApplication.behavior;
 using WormsApplication.data.behavior;
 using WormsApplication.services.generator.food;
 

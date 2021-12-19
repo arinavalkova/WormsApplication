@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 
 namespace WormsApplication.data.behavior
@@ -12,9 +13,9 @@ namespace WormsApplication.data.behavior
         {
             _foodGenerator = foodGenerator;
         }
-        public List<Coord> Generate(int countOfMoves)
+        public List<Position> Generate(int countOfMoves)
         {
-            var resultListOfCoord = new List<Coord>();
+            var resultListOfCoord = new List<Position>();
             var resultListOfFoods = new List<Food>();
             for (var i = 0; i < countOfMoves; i++)
             {
@@ -29,7 +30,7 @@ namespace WormsApplication.data.behavior
                 }
             }
             foreach (var food in resultListOfFoods) 
-                resultListOfCoord.Add(new Coord{X = food.GetX(), Y = food.GetY()});
+                resultListOfCoord.Add(new Position(){X = food.GetX(), Y = food.GetY()});
             return resultListOfCoord;
         }
         private Food FindLastFood(Food food, List<Food> list)
@@ -40,7 +41,7 @@ namespace WormsApplication.data.behavior
             return answerFood;
         }
 
-        public string CoordsToString(List<Coord> coords)
+        public string CoordsToString(List<Position> coords)
         {
             var stringBuilder = new StringBuilder();
             foreach (var coord in coords)

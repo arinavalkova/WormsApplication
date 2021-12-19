@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using WormsApplication.commands;
+using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 using WormsApplication.services.logger;
@@ -17,7 +18,7 @@ namespace WormsApplication.UnitTests
             var namesGenerator = new NamesGenerator();
             var fileLogger = new MockLogger();
             var wormId = 1;
-            var dictionary = new Dictionary<Func<CommandFactory, MoveCommand>, Coord>
+            var dictionary = new Dictionary<Func<CommandFactory, MoveCommand>, Position>
             {
                 [factory => factory.MoveDownCommand()] = new() {X = 0, Y = 1},
                 [factory => factory.MoveUpCommand()] = new() {X = 0, Y = -1},
@@ -29,7 +30,7 @@ namespace WormsApplication.UnitTests
                 var worm = new Worm(namesGenerator.Generate(), 0, 0);
                 var world = new World(foodGenerator, namesGenerator, new List<Worm> {worm});
                 command(new CommandFactory(world, fileLogger)).Invoke(wormId);
-                Assert.AreEqual(new Coord {X = worm.GetX(), Y = worm.GetY()}, coord);
+                Assert.AreEqual(new Position {X = worm.GetX(), Y = worm.GetY()}, coord);
             }
         }
 
@@ -39,18 +40,18 @@ namespace WormsApplication.UnitTests
             var startVitality = 10;
             var vitalityAfterEating = 10;
             var vitalityAfterMove = 1;
-            var foodCoord = new Coord {X = 0, Y = 1};
+            var foodCoord = new Position {X = 0, Y = 1};
             var wormId = 1;
             var namesGenerator = new NamesGenerator();
             var worm = new Worm(namesGenerator.Generate(), 0, 0);
             var world = new World(
-                new CustomFoodGenerator(new List<Coord> {foodCoord}),
+                new CustomFoodGenerator(new List<Position> {foodCoord}),
                 namesGenerator,
                 new List<Worm> {worm}
             );
 
             new CommandFactory(world, new MockLogger()).MoveDownCommand().Invoke(wormId);
-            Assert.AreEqual(new Coord {X = worm.GetX(), Y = worm.GetY()}, foodCoord);
+            Assert.AreEqual(new Position {X = worm.GetX(), Y = worm.GetY()}, foodCoord);
             Assert.AreEqual(worm.GetVitality(), startVitality + vitalityAfterEating - vitalityAfterMove);
         }
 
@@ -63,7 +64,7 @@ namespace WormsApplication.UnitTests
             var world = new World(new MockFoodGenerator(), namesGenerator, new List<Worm> {firstWorm, secondWorm});
             var wormId = 1;
             new CommandFactory(world, new MockLogger()).MoveDownCommand().Invoke(wormId);
-            Assert.AreEqual(new Coord {X = firstWorm.GetX(), Y = firstWorm.GetY()}, new Coord {X = 0, Y = 0});
+            Assert.AreEqual(new Position {X = firstWorm.GetX(), Y = firstWorm.GetY()}, new Position {X = 0, Y = 0});
         }
     }
 }

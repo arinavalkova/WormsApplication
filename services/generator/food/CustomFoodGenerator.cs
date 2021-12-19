@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using WormsApplication.entities;
 
 namespace WormsApplication.services.generator.food
 {
     public class CustomFoodGenerator : IFoodGenerator
     {
-        private readonly List<Coord> _listOfCoord;
+        private readonly List<Position> _listOfCoord;
         private int _currentPosition = 0;
 
-        public CustomFoodGenerator(List<Coord> listOfCoord)
+        public CustomFoodGenerator(List<Position> listOfCoord)
         {
             _listOfCoord = listOfCoord;
         }

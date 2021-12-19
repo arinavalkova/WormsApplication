@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WormsApplication.data.way.entities;
+using WormsApplication.entities;
 
 namespace WormsApplication.data.way
 {
@@ -16,26 +16,22 @@ namespace WormsApplication.data.way
 
             foreach (var worm in worms)
             {
-                PositionEntity positionEntity = new()
+                Position positionEntity = new()
                 {
-                    x = worm.GetX(),
-                    y = worm.GetY()
+                    X = worm.GetX(),
+                    Y = worm.GetY()
                 };
-                WormEntity wormEntity = new()
-                {
-                    name = worm.GetName(),
-                    position = positionEntity,
-                    lifeStrength = worm.GetVitality()
-                };
+                WormEntity wormEntity =
+                    new(worm.GetName(), positionEntity.X, positionEntity.Y, worm.GetVitality());
                 wormEntities.Add(wormEntity);
             }
 
             foreach (var food in foods)
             {
-                PositionEntity positionEntity = new()
+                Position positionEntity = new()
                 {
-                    x = food.GetX(),
-                    y = food.GetY()
+                    X = food.GetX(),
+                    Y = food.GetY()
                 };
                 FoodEntity foodEntity = new()
                 {

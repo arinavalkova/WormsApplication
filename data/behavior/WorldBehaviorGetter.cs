@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WormsApplication.behavior;
+using WormsApplication.entities;
 
 namespace WormsApplication.data.behavior
 {
@@ -12,10 +12,10 @@ namespace WormsApplication.data.behavior
             _serverBehaviorContext = serverBehaviorContext;
             _behaviorParser = new BehaviorParser();
         }
-        public Coord Get(string name)
+        public Position Get(string name)
         {
             var coord = _serverBehaviorContext.Coords.Find(name);
-            return new Coord {X = coord.X, Y = coord.Y};
+            return new Position() {X = coord.X, Y = coord.Y};
         }
     }
 }

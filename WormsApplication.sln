@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WormsApplication.UnitTests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WormsWeb", "WormsWeb\WormsWeb.csproj", "{456224E9-E6A8-4057-9166-E4048DDBD6D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntitiesLibrary", "EntitiesLibrary\EntitiesLibrary.csproj", "{09C79EB6-2C6E-4672-92CB-96A4C220B2DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{456224E9-E6A8-4057-9166-E4048DDBD6D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{456224E9-E6A8-4057-9166-E4048DDBD6D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{456224E9-E6A8-4057-9166-E4048DDBD6D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09C79EB6-2C6E-4672-92CB-96A4C220B2DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09C79EB6-2C6E-4672-92CB-96A4C220B2DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09C79EB6-2C6E-4672-92CB-96A4C220B2DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09C79EB6-2C6E-4672-92CB-96A4C220B2DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -14,11 +14,11 @@ namespace WormsApplication.UnitTests
         public void GenerateCommandTest_LuckyTry_AnotherWorm()
         {
             var namesGenerator = new NamesGenerator();
-            var worm = new Worm(namesGenerator.Generate(), 0, 0, 100);
-            var world = new World(new MockFoodGenerator(), namesGenerator, new List<Worm> {worm});
-            new CommandFactory(world, new MockLogger()).GenerateDownCommand().Invoke(1);
-            var generatedWorm = world.GetWormById(2);
-            Assert.AreEqual(new Position {X = generatedWorm.GetX(), Y = generatedWorm.GetY()},
+            var worm1 = new Worm(namesGenerator.Generate(), 0, 0, 100);
+            var world = new World(new MockFoodGenerator(), namesGenerator, new List<Worm> {worm1});
+            var worm2 = new CommandFactory(world, new MockLogger()).GenerateDownCommand().Invoke(worm1);
+            Assert.NotNull(worm2);
+            Assert.AreEqual(new Position {X = worm2.Position.X, Y = worm2.Position.Y},
                 new Position {X = 0, Y = 1}
             );
         }
@@ -29,8 +29,8 @@ namespace WormsApplication.UnitTests
             var namesGenerator = new NamesGenerator();
             var worm = new Worm(namesGenerator.Generate(), 0, 0, 5);
             var world = new World(new MockFoodGenerator(), namesGenerator, new List<Worm> {worm});
-            new CommandFactory(world, new MockLogger()).GenerateDownCommand().Invoke(1);
-            Assert.AreEqual(world.GetWormsIds().Count, 1);
+            new CommandFactory(world, new MockLogger()).GenerateDownCommand().Invoke(worm);
+            Assert.AreEqual(world.GetWorms().Count, 1);
         }
 
         [Test]
@@ -40,8 +40,8 @@ namespace WormsApplication.UnitTests
             var firstWorm = new Worm(namesGenerator.Generate(), 0, 0, 100);
             var secondWorm = new Worm(namesGenerator.Generate(), 0, 1, 100);
             var world = new World(new MockFoodGenerator(), namesGenerator, new List<Worm> {firstWorm, secondWorm});
-            new CommandFactory(world, new MockLogger()).GenerateDownCommand().Invoke(1);
-            Assert.AreEqual(world.GetWormsIds().Count, 2);
+            new CommandFactory(world, new MockLogger()).GenerateDownCommand().Invoke(firstWorm);
+            Assert.AreEqual(world.GetWorms().Count, 2);
         }
     }
 }

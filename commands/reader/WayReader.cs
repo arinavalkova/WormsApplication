@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using WormsApplication.commands.parser;
-using WormsApplication.data.way;
+using WormsApplication.entities;
 
 namespace WormsApplication.commands.reader
 {
@@ -13,7 +13,6 @@ namespace WormsApplication.commands.reader
             [ReadingWays.Circle] = new CircleReader(),
             [ReadingWays.NearestFood] = new NearestFoodReader(),
             [ReadingWays.Game] = new GameReader(),
-          //  [ReadingWays.Api] = new ApiReader()
         };
 
         private static readonly List<Commands> CircleCommandList = new()
@@ -32,19 +31,19 @@ namespace WormsApplication.commands.reader
 
         private static int _circleCommandListPosition = 0;
 
-        public Commands Walk(World world, int id)
+        public Commands Walk(World world, Worm worm)
         {
-            return _reader[_readingWay].Invoke(world, id);
+            return _reader[_readingWay].Invoke(world, worm);
         }
 
         private interface IReader
         {
-            public Commands Invoke(World world, int id);
+            public Commands Invoke(World world, Worm worm);
         }
 
         private class CircleReader : IReader
         {
-            public Commands Invoke(World world,int id)
+            public Commands Invoke(World world, Worm worm)
             {
                 var command = CircleCommandList[_circleCommandListPosition];
                 if (_circleCommandListPosition + 1 == CircleCommandList.Count) _circleCommandListPosition = 0;
@@ -55,26 +54,18 @@ namespace WormsApplication.commands.reader
 
         private class NearestFoodReader : IReader
         {
-            public Commands Invoke(World world, int id)
+            public Commands Invoke(World world, Worm worm)
             {
-                return world.FindCommandToMoveToNearestFood(id);
+                return world.FindCommandToMoveToNearestFood(worm);
             }
         }
 
         private class GameReader : IReader
         {
-            public Commands Invoke(World world, int id)
+            public Commands Invoke(World world, Worm worm)
             {
-                return world.StartGame(id);
+                return world.StartGame(worm);
             }
         }
-        
-        // private class ApiReader : IReader
-        // {
-        //     public Commands Invoke(World world, int id)
-        //     {
-        //         
-        //     }
-        // }
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace WormsApplication.commands
+﻿using WormsApplication.entities;
+
+namespace WormsApplication.commands
 {
     public interface ICommand
     {
-        public bool Invoke(int id);
+        public Worm? Invoke(Worm worm);
     }
 }

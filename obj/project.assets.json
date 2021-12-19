@@ -992,6 +992,16 @@
             "rid": "win"
           }
         }
+      },
+      "EntitiesLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/EntitiesLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EntitiesLibrary.dll": {}
+        }
       }
     }
   },
@@ -2682,10 +2692,16 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "EntitiesLibrary/1.0.0": {
+      "type": "project",
+      "path": "EntitiesLibrary/EntitiesLibrary.csproj",
+      "msbuildProject": "EntitiesLibrary/EntitiesLibrary.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "EntitiesLibrary >= 1.0.0",
       "Microsoft.EntityFrameworkCore.InMemory >= 6.0.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.0",
       "Microsoft.Extensions.DependencyInjection >= 6.0.0",
@@ -2717,7 +2733,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\ACER\\RiderProjects\\WormsApplication\\EntitiesLibrary\\EntitiesLibrary.csproj": {
+              "projectPath": "C:\\Users\\ACER\\RiderProjects\\WormsApplication\\EntitiesLibrary\\EntitiesLibrary.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

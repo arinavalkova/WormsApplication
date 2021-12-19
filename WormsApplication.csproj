@@ -11,18 +11,21 @@
       <Compile Remove="WormsApplication.UnitTests\**" />
       <Compile Remove="WebApplication\**" />
       <Compile Remove="WormsWeb\**" />
+      <Compile Remove="EntitiesLibrary\**" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Remove="WormsApplication.UnitTests\**" />
       <EmbeddedResource Remove="WebApplication\**" />
       <EmbeddedResource Remove="WormsWeb\**" />
+      <EmbeddedResource Remove="EntitiesLibrary\**" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="WormsApplication.UnitTests\**" />
       <None Remove="WebApplication\**" />
       <None Remove="WormsWeb\**" />
+      <None Remove="EntitiesLibrary\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -31,6 +34,10 @@
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0-rc.1.21451.13" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="EntitiesLibrary\EntitiesLibrary.csproj" />
     </ItemGroup>
 
 </Project>

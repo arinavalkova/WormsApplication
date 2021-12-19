@@ -17,7 +17,6 @@ namespace WormsApplication.UnitTests
             var foodGenerator = new MockFoodGenerator();
             var namesGenerator = new NamesGenerator();
             var fileLogger = new MockLogger();
-            var wormId = 1;
             var dictionary = new Dictionary<Func<CommandFactory, MoveCommand>, Position>
             {
                 [factory => factory.MoveDownCommand()] = new() {X = 0, Y = 1},
@@ -29,8 +28,8 @@ namespace WormsApplication.UnitTests
             {
                 var worm = new Worm(namesGenerator.Generate(), 0, 0);
                 var world = new World(foodGenerator, namesGenerator, new List<Worm> {worm});
-                command(new CommandFactory(world, fileLogger)).Invoke(wormId);
-                Assert.AreEqual(new Position {X = worm.GetX(), Y = worm.GetY()}, coord);
+                command(new CommandFactory(world, fileLogger)).Invoke(worm);
+                Assert.AreEqual(new Position {X = worm.Position.X, Y = worm.Position.Y}, coord);
             }
         }
 
@@ -41,7 +40,6 @@ namespace WormsApplication.UnitTests
             var vitalityAfterEating = 10;
             var vitalityAfterMove = 1;
             var foodCoord = new Position {X = 0, Y = 1};
-            var wormId = 1;
             var namesGenerator = new NamesGenerator();
             var worm = new Worm(namesGenerator.Generate(), 0, 0);
             var world = new World(
@@ -50,9 +48,9 @@ namespace WormsApplication.UnitTests
                 new List<Worm> {worm}
             );
 
-            new CommandFactory(world, new MockLogger()).MoveDownCommand().Invoke(wormId);
-            Assert.AreEqual(new Position {X = worm.GetX(), Y = worm.GetY()}, foodCoord);
-            Assert.AreEqual(worm.GetVitality(), startVitality + vitalityAfterEating - vitalityAfterMove);
+            new CommandFactory(world, new MockLogger()).MoveDownCommand().Invoke(worm);
+            Assert.AreEqual(new Position {X = worm.Position.X, Y = worm.Position.Y}, foodCoord);
+            Assert.AreEqual(worm.LifeStrength, startVitality + vitalityAfterEating - vitalityAfterMove);
         }
 
         [Test]
@@ -62,9 +60,9 @@ namespace WormsApplication.UnitTests
             var firstWorm = new Worm(namesGenerator.Generate(), 0, 0);
             var secondWorm = new Worm(namesGenerator.Generate(), 0, 1);
             var world = new World(new MockFoodGenerator(), namesGenerator, new List<Worm> {firstWorm, secondWorm});
-            var wormId = 1;
-            new CommandFactory(world, new MockLogger()).MoveDownCommand().Invoke(wormId);
-            Assert.AreEqual(new Position {X = firstWorm.GetX(), Y = firstWorm.GetY()}, new Position {X = 0, Y = 0});
+            new CommandFactory(world, new MockLogger()).MoveDownCommand().Invoke(firstWorm);
+            Assert.AreEqual(new Position {X = firstWorm.Position.X, Y = firstWorm.Position.Y},
+                new Position {X = 0, Y = 0});
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EntitiesLibrary.entities;
 using WormsApplication.commands.parser;
 using WormsApplication.data.way;
+using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 
@@ -10,91 +12,79 @@ namespace WormsApplication
 {
     public class World
     {
-        private int _currentId = 1;
         private const int FoodVitality = 10;
         private const int NoVitality = 0;
-        private const int MaxFoodAge = 10;
         private const int MinVitalityToGenerate = 10;
 
         private readonly NamesGenerator _namesGenerator;
         private readonly IFoodGenerator _foodGenerator;
 
-        private readonly Dictionary<int, Worm> _worms;
-        private readonly List<Food> _foodList;
+        private WorldState _worldState; 
 
         public World(IFoodGenerator foodGenerator, NamesGenerator namesGenerator, List<Worm> worms)
         {
             _namesGenerator = namesGenerator;
-            _foodList = new List<Food>();
+            var foodList = new List<Food>();
             _foodGenerator = foodGenerator;
             var food = _foodGenerator.Generate();
-            if (food != null) _foodList.Add(food);
-            _worms = new Dictionary<int, Worm>();
-            foreach (var worm in worms) _worms.Add(_currentId++, worm);
+            foodList.Add(food!);
+            _worldState = new WorldState
+            {
+                Food = foodList,
+                Worms = worms
+            };
         }
 
-        public List<int> GetWormsIds()
+        public WorldState GetWorldState()
         {
-            return new List<int>(_worms.Keys);
-        }
-
-        public Worm GetWormById(int id)
-        {
-            return _worms[id];
+            return _worldState;
         }
 
         public List<Worm> GetWorms()
         {
-            return new List<Worm>(_worms.Values);
+            return _worldState.Worms;
         }
 
         private bool IsCellNotWorm(int x, int y)
         {
             var worms = GetWorms();
-            return worms.All(worm => worm.GetX() != x || worm.GetY() != y);
+            return worms.All(worm => worm.Position.X != x || worm.Position.Y != y);
         }
 
-        public int MoveWorm(int id, int shiftX, int shiftY)
+        public int MoveWorm(Worm worm, int shiftX, int shiftY)
         {
-            var worm = GetWormById(id);
-            var x = shiftX + worm.GetX();
-            var y = shiftY + worm.GetY();
-            //Console.WriteLine($"{x} {y}");
+            var x = shiftX + worm.Position.X;
+            var y = shiftY + worm.Position.Y;
             if (!IsCellNotWorm(x, y)) return NoVitality;
-            worm.SetX(x);
-            worm.SetY(y);
+            worm.Position.X = x;
+            worm.Position.Y = y;
             return EatFoodIfWormCan(x, y) ? FoodVitality : NoVitality;
         }
 
-        public void DecreaseVitality(int id, int countOfDecrease)
+        public void DecreaseVitality(Worm worm, int countOfDecrease)
         {
-            var worm = GetWormById(id);
-            if (worm.GetVitality() <= 0) DeleteWormById(id);
-            else worm.DecreaseVitality(countOfDecrease);
-        }
-
-        private void DeleteWormById(int id)
-        {
-            _worms.Remove(id);
+            if (worm.LifeStrength <= 0) _worldState.Worms.Remove(worm);
+            else worm.DecreaseLifeStrength(countOfDecrease);
         }
 
         private bool EatFoodIfWormCan(int x, int y)
         {
             var food = IsFoodCell(x, y);
             if (food == null) return false;
-            _foodList.Remove(food);
+            _worldState.Food.Remove(food);
             return true;
         }
 
-        private Food IsFoodCell(int x, int y)
+        private Food? IsFoodCell(int x, int y)
         {
-            foreach (var food in _foodList.Where(food => food.GetX() == x && food.GetY() == y)) return food;
+            foreach (var food in _worldState.Food.Where(food => food.Position.X == x && food.Position.Y == y))
+                return food;
             return null;
         }
 
-        public void IncreaseVitality(int id, int countOfVitality)
+        public void IncreaseVitality(Worm worm, int countOfVitality)
         {
-            GetWormById(id).IncreaseVitality(countOfVitality);
+            worm.IncreaseLifeStrength(countOfVitality);
         }
 
         public void GenerateFood()
@@ -104,9 +94,9 @@ namespace WormsApplication
             AddNewFood(GetNewFood());
         }
 
-        public Food GetNewFood()
+        private Food? GetNewFood()
         {
-            Food newFood = null;
+            Food? newFood = null;
             var isEmpty = false;
 
             while (!isEmpty)
@@ -114,63 +104,69 @@ namespace WormsApplication
                 newFood = _foodGenerator.Generate();
                 if (newFood == null) return null;
                 isEmpty = true;
-                foreach (var food in _foodList)
+                var foodList = _worldState.Food;
+                foreach (var food in foodList)
                 {
-                    if (food.GetX() != newFood.GetX() || food.GetY() != newFood.GetY()) continue;
+                    if (food.Position.X != newFood.Position.X || food.Position.Y != newFood.Position.Y) continue;
                     isEmpty = false;
                     break;
                 }
             }
+
             return newFood;
         }
 
-        public void AddNewFood(Food newFood)
+        private void AddNewFood(Food newFood)
         {
-            if (newFood != null) _foodList.Add(newFood);
+            if (newFood != null) _worldState.Food.Add(newFood);
         }
 
         private void DeleteNotFreshFood()
         {
-            foreach (var food in _foodList)
+            var foodList = _worldState.Food;
+            foreach (var food in foodList)
             {
-                if (food.GetAge() == MaxFoodAge)
+                if (food.ExpiresIn == 0)
                 {
-                    _foodList.Remove(food);
+                    foodList.Remove(food);
                     break;
                 }
             }
         }
+
         private void IncreaseFoodAge()
         {
-            foreach (var food in _foodList) food.IncreaseAge();
+            var foodList = _worldState.Food;
+            foreach (var food in foodList) food.DecreaseExpiresIn();
         }
 
         public List<Food> GetFoods()
         {
-            return _foodList;
+            return _worldState.Food;
         }
 
-        public void GenerateNewWorm(int id, int shiftX, int shiftY)
+        public Worm GenerateNewWorm(Worm worm, int shiftX, int shiftY)
         {
-            var worm = GetWormById(id);
-            var newWormX = worm.GetX() + shiftX;
-            var newWormY = worm.GetY() + shiftY;
-            if (worm.GetVitality() <= MinVitalityToGenerate) return;
-            if (!IsCellNotWorm(newWormX, newWormY)) return;
-            if (IsFoodCell(newWormX, newWormY) != null) return;
-            CreateNewWorm(newWormX, newWormY);
+            var newWormX = worm.Position.X + shiftX;
+            var newWormY = worm.Position.Y + shiftY;
+            if (worm.LifeStrength <= MinVitalityToGenerate) return worm;
+            if (!IsCellNotWorm(newWormX, newWormY)) return worm;
+            if (IsFoodCell(newWormX, newWormY) != null) return worm;
+            return CreateNewWorm(newWormX, newWormY);
         }
 
-        private void CreateNewWorm(int x, int y)
+        private Worm CreateNewWorm(int x, int y)
         {
-            _worms.Add(_currentId++, new Worm(_namesGenerator.Generate(), x, y));
+            Worm worm = new(_namesGenerator.Generate(), x, y);
+            _worldState.Worms.Add(worm);
+            return worm;
         }
 
-        public int EatFoodOnWormIfCan(int id)
+        public int EatFoodOnWormIfCan(Worm worm)
         {
-            var worm = GetWormById(id);
-            foreach (var food in _foodList)
-                if (food.GetX() == worm.GetX() && food.GetY() == worm.GetY())
+            var foodList = _worldState.Food;
+            foreach (var food in foodList)
+                if (food.Position.X == worm.Position.X && food.Position.Y == worm.Position.Y)
                     return FoodVitality;
             return NoVitality;
         }
@@ -180,79 +176,82 @@ namespace WormsApplication
             return Math.Abs(aX - bX) + Math.Abs(aY - bY);
         }
 
-        public Commands FindCommandToMoveToNearestFood(int id)
+        public Commands FindCommandToMoveToNearestFood(Worm worm)
         {
-            var worm = GetWormById(id);
             var minDistance = int.MaxValue;
-            Food nearestFood = null;
+            Food? nearestFood = null;
             var foods = GetFoods();
-            var vitality = worm.GetVitality();
+            var vitality = worm.LifeStrength;
             foreach (var food in foods)
             {
-                var newDistance = DistanceBetweenCells(worm.GetX(), food.GetX(), worm.GetY(), food.GetY());
-                if (!(newDistance < minDistance) || 
-                    vitality > minDistance && food.GetAge() + minDistance <= MaxFoodAge) continue;
+                var newDistance =
+                    DistanceBetweenCells(worm.Position.X, food.Position.X, worm.Position.Y, food.Position.Y);
+                if (!(newDistance < minDistance) ||
+                    vitality > minDistance && food.ExpiresIn + minDistance > 0) continue;
                 minDistance = newDistance;
                 nearestFood = food;
             }
-            return nearestFood != null ? 
-                FindCommandForWalkToCell(worm, nearestFood.GetX(), nearestFood.GetY()) 
-                : 
-                FindCommandForWalkToCell(worm, 0, 0);
+
+            return nearestFood != null
+                ? FindCommandForWalkToCell(worm, nearestFood.Position.X, nearestFood.Position.Y)
+                : FindCommandForWalkToCell(worm, 0, 0);
         }
 
         private Commands FindCommandForWalkToCell(Worm worm, int x, int y)
         {
-            if (x != worm.GetX() && x < worm.GetX()) return Commands.MoveLeft;
-            if (x != worm.GetX() && x > worm.GetX()) return Commands.MoveRight;
-            if (y != worm.GetY() && y > worm.GetY()) return Commands.MoveDown;
-            if (y != worm.GetY() && y < worm.GetY()) return Commands.MoveUp;
+            if (x != worm.Position.X && x < worm.Position.X) return Commands.MoveLeft;
+            if (x != worm.Position.X && x > worm.Position.X) return Commands.MoveRight;
+            if (y != worm.Position.Y && y > worm.Position.Y) return Commands.MoveDown;
+            if (y != worm.Position.Y && y < worm.Position.Y) return Commands.MoveUp;
             return Commands.Nothing;
         }
-        public Commands StartGame(int wormId)
+
+        public Commands StartGame(Worm worm)
         {
-            var worm = GetWormById(wormId);
             var minDistance = int.MaxValue;
-            Food nearestFood = null;
+            Food? nearestFood = null;
             var foods = new List<Food>(GetFoods());
-            var vitality = worm.GetVitality();
+            var vitality = worm.LifeStrength;
             foreach (var food in foods)
             {
-                var newDistance = DistanceBetweenCells(worm.GetX(), food.GetX(), worm.GetY(), food.GetY());
-                if (!(newDistance < minDistance) || 
-                    vitality > minDistance && food.GetAge() + minDistance <= MaxFoodAge) continue;
+                var newDistance =
+                    DistanceBetweenCells(worm.Position.X, food.Position.X, worm.Position.Y, food.Position.Y);
+                if (!(newDistance < minDistance) ||
+                    vitality > minDistance && food.ExpiresIn + minDistance > 0) continue;
                 minDistance = newDistance;
                 nearestFood = food;
             }
-            if (worm.GetVitality() > minDistance + MinVitalityToGenerate)
+
+            if (worm.LifeStrength > minDistance + MinVitalityToGenerate)
             {
                 foods.Remove(nearestFood);
-                return FindGenerateCommand(wormId, foods);
+                return FindGenerateCommand(worm, foods);
             }
-            return nearestFood != null ? 
-                FindCommandForWalkToCell(worm, nearestFood.GetX(), nearestFood.GetY()) 
-                : 
-                FindCommandForWalkToCell(worm, 0, 0);
+
+            return nearestFood != null
+                ? FindCommandForWalkToCell(worm, nearestFood.Position.X, nearestFood.Position.Y)
+                : FindCommandForWalkToCell(worm, 0, 0);
         }
-        private Commands FindGenerateCommand(int wormId, List<Food> foods)
+
+        private Commands FindGenerateCommand(Worm worm, List<Food> foods)
         {
-            var worm = GetWormById(wormId);
             var minDistance = int.MaxValue;
-            Food nearestFood = null;
-            var vitality = worm.GetVitality();
+            Food? nearestFood = null;
+            var vitality = worm.LifeStrength;
             foreach (var food in foods)
             {
-                var newDistance = DistanceBetweenCells(worm.GetX(), food.GetX(), worm.GetY(), food.GetY());
-                if (!(newDistance < minDistance) || 
-                    vitality > minDistance && food.GetAge() + minDistance <= MaxFoodAge) continue;
+                var newDistance =
+                    DistanceBetweenCells(worm.Position.X, food.Position.X, worm.Position.Y, food.Position.Y);
+                if (!(newDistance < minDistance) ||
+                    vitality > minDistance && food.ExpiresIn + minDistance > 0) continue;
                 minDistance = newDistance;
                 nearestFood = food;
             }
+
             return _moveToGenerateCommand[
-                nearestFood != null ? 
-                    FindCommandForWalkToCell(worm, nearestFood.GetX(), nearestFood.GetY())
-                    : 
-                    FindCommandForWalkToCell(worm, 0, 0)
+                nearestFood != null
+                    ? FindCommandForWalkToCell(worm, nearestFood.Position.X, nearestFood.Position.Y)
+                    : FindCommandForWalkToCell(worm, 0, 0)
             ];
         }
 

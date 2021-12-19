@@ -1838,10 +1838,21 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
+      "EntitiesLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/EntitiesLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EntitiesLibrary.dll": {}
+        }
+      },
       "WormsApplication/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "EntitiesLibrary": "1.0.0",
           "Microsoft.EntityFrameworkCore.InMemory": "6.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.0",
           "Microsoft.Extensions.DependencyInjection": "6.0.0",
@@ -6429,6 +6440,11 @@
         "system.xml.xdocument.4.0.11.nupkg.sha512",
         "system.xml.xdocument.nuspec"
       ]
+    },
+    "EntitiesLibrary/1.0.0": {
+      "type": "project",
+      "path": "../EntitiesLibrary/EntitiesLibrary.csproj",
+      "msbuildProject": "../EntitiesLibrary/EntitiesLibrary.csproj"
     },
     "WormsApplication/1.0.0": {
       "type": "project",

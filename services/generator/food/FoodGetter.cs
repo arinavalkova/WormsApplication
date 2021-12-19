@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using EntitiesLibrary.entities;
 using WormsApplication.data;
 using WormsApplication.data.behavior.entity;
+using WormsApplication.entities;
 
 namespace WormsApplication.services.generator.food
 {

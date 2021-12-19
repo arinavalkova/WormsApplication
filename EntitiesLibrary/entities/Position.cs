@@ -6,9 +6,17 @@ namespace WormsApplication.entities
     public class Position
     {
         [JsonPropertyName("x")]
-        public int X { get; init; }
+        public int X { get; set; }
         [JsonPropertyName("y")]
-        public int Y { get; init; }
+        public int Y { get; set; }
+        
+        [JsonConstructor]
+        public Position(int x, int y){
+            X = x;
+            Y = y;
+        }
+        
+        public Position() {}
         
         private bool Equals(Position other)
         {
@@ -25,6 +33,11 @@ namespace WormsApplication.entities
         public override int GetHashCode()
         {
             return HashCode.Combine(X, Y);
+        }
+
+        public override string ToString()
+        {
+            return "[" + X + ", " + Y + "]";
         }
     }
 }

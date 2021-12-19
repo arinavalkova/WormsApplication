@@ -1,13 +1,14 @@
 ﻿using System;
+using WormsApplication.entities;
 
 namespace WormsApplication.commands
 {
     public class BadCommand : ICommand
     {
-        public bool Invoke(int id)
+        public Worm? Invoke(Worm worm)
         {
-            Console.WriteLine($"Bad command for worm id:{id}. Try again!");
-            return false;
+            Console.WriteLine($"Bad command for worm {worm.Name}. Try again!");
+            return null;
         }
     }
 }

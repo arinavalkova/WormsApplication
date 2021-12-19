@@ -1,4 +1,5 @@
-﻿using WormsApplication.services.logger;
+﻿using WormsApplication.entities;
+using WormsApplication.services.logger;
 
 namespace WormsApplication.commands
 {
@@ -15,16 +16,17 @@ namespace WormsApplication.commands
             _shiftX = shiftX;
             _shiftY = shiftY;
         }
-        public bool Invoke(int id)
+        public Worm Invoke(Worm worm)
         {
-            GeneralStartMove(id);
-            GenerateCommands(id, _shiftX, _shiftY);
-            return GeneralEndMove(id);
+            GeneralStartMove(worm);
+            var wormAfterMove = GenerateCommands(worm, _shiftX, _shiftY);
+            GeneralEndMove(worm);
+            return wormAfterMove;
         }
 
-        private void GenerateCommands(int wormId, int shiftX, int shiftY)
+        private Worm GenerateCommands(Worm worm, int shiftX, int shiftY)
         {
-            _world.GenerateNewWorm(wormId, shiftX, shiftY);
+            return _world.GenerateNewWorm(worm, shiftX, shiftY);
         }
     }
 }

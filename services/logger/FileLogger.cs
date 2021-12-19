@@ -19,14 +19,14 @@ namespace WormsApplication.services.logger
                 streamWriter.Write($"{world.GetWorms().Count}  Worms:[");
                 foreach (var worm in worms)
                 {
-                    streamWriter.Write($"{worm.GetName()}-{worm.GetVitality()}({worm.GetX()},{worm.GetY()})");
+                    streamWriter.Write($"{worm.Name}-{worm.LifeStrength}({worm.Position.X},{worm.Position.Y})");
                 }
 
                 var foods = world.GetFoods();
                 streamWriter.Write($"], Food:[");
                 foreach (var food in foods)
                 {
-                    streamWriter.Write($"({food.GetX()},{food.GetY()})");
+                    streamWriter.Write($"({food.Position.X},{food.Position.Y})");
                 }
 
                 streamWriter.WriteLine($"]");

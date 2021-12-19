@@ -32,7 +32,7 @@ namespace WormsApplication
                     services.AddHostedService<WorldSimulatorService>();
                     services.AddSingleton<IFoodGenerator, FoodGetter>(
                         provider => new FoodGetter(BehaviorName, provider.GetService<SqlServerBehaviorContext>()));
-                    services.AddSingleton<NamesGenerator>();
+                    services.AddSingleton<NamesGenerator>(); 
                     //services.AddSingleton(_ => new WayReader(ReadingWays.Game));
                     services.AddSingleton<ILogger, FileLogger>();
                 });

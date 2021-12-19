@@ -23,8 +23,10 @@ namespace WormsApplication.UnitTests
             var wayReader = new WayReader(ReadingWays.NearestFood);
             var world = new World(foodGenerator, namesGenerator, new List<Worm> {worm});
             var commandParser = new CommandParser(world, new MockLogger());
-            for (var i = 0; i < movesToNearestFood; i++) while (!commandParser.GetCommand(wayReader.Walk(world, 1)).Invoke(1)) ;
-            Assert.AreEqual(new Position{X = worm.GetX(), Y = worm.GetY()}, firstFoodCoord);
+            for (var i = 0; i < movesToNearestFood; i++)
+                while (commandParser.GetCommand(wayReader.Walk(world, worm)).Invoke(worm) == null)
+                    ;
+            Assert.AreEqual(new Position {X = worm.Position.X, Y = worm.Position.Y}, firstFoodCoord);
         }
     }
 }

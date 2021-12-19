@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using WormsApplication.commands.parser;
 using WormsApplication.commands.reader;
 using WormsApplication.data.way;
+using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 using WormsApplication.services.logger;
@@ -20,7 +21,7 @@ namespace WormsApplication
 
         private readonly World _world;
         private readonly CommandParser _commandParser;
-        private readonly WayReader _wayReader;
+        //private readonly WayReader _wayReader;
         private readonly IHostApplicationLifetime _appLifetime;
 
         public WorldSimulatorService(IFoodGenerator foodGenerator,
@@ -32,7 +33,7 @@ namespace WormsApplication
             _world = new World(foodGenerator, namesGenerator,
                 new List<Worm> {new(namesGenerator.Generate(), CenterXCoord, CenterYCoord)});
             _commandParser = new CommandParser(_world, fileLogger);
-            //_wayReader = wayReader;
+           // _wayReader = wayReader;
             _appLifetime = appLifetime;
         }
 
@@ -40,14 +41,15 @@ namespace WormsApplication
         {
             // for (var i = 0; i < NumberOfMoves; i++)
             // {
-            //     var currentWormsId = _world.GetWormsIds();
-            //     foreach (var id in currentWormsId)
+            //     var currentWorms = new List<Worm>(_world.GetWorms());
+            //     foreach (var worm in currentWorms)
             //     {
-            //         while (!_commandParser.GetCommand(_wayReader.Walk(_world, id)).Invoke(id)) ;
+            //         while (_commandParser.GetCommand(_wayReader.Walk(_world, worm)).Invoke(worm) == null) ;
             //     }
+            //
             //     _world.GenerateFood();
             // }
-            await new WayGetter().Get(_world, 1);
+            await new WayGetter().Get(_world.GetWorldState(), _world.GetWorldState().Worms[0]);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

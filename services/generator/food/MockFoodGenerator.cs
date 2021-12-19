@@ -1,8 +1,11 @@
-﻿namespace WormsApplication.services.generator.food
+﻿using EntitiesLibrary.entities;
+using WormsApplication.entities;
+
+namespace WormsApplication.services.generator.food
 {
     public class MockFoodGenerator : IFoodGenerator
     {
-        public Food Generate()
+        public Food? Generate()
         {
             return null;
         }

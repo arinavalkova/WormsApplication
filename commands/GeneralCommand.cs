@@ -1,4 +1,5 @@
-﻿using WormsApplication.services.logger;
+﻿using WormsApplication.entities;
+using WormsApplication.services.logger;
 
 namespace WormsApplication.commands
 {
@@ -15,16 +16,15 @@ namespace WormsApplication.commands
             _countOfDecreaseVitality = countOfDecreaseVitality;
         }
 
-        protected bool GeneralEndMove(int wormId)
+        protected void GeneralEndMove(Worm worm)
         {
-            _world.DecreaseVitality(wormId,_countOfDecreaseVitality);
+            _world.DecreaseVitality(worm,_countOfDecreaseVitality);
             _fileLogger.Log(_world);
-            return true;
         }
 
-        protected void GeneralStartMove(int wormId)
+        protected void GeneralStartMove(Worm worm)
         {
-            _world.IncreaseVitality(wormId,  _world.EatFoodOnWormIfCan(wormId));
+            _world.IncreaseVitality(worm,  _world.EatFoodOnWormIfCan(worm));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EntitiesLibrary.entities;
 using WormsApplication.entities;
 
 namespace WormsApplication.services.generator.food

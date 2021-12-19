@@ -1,4 +1,6 @@
 ﻿using System;
+using EntitiesLibrary.entities;
+using WormsApplication.entities;
 
 namespace WormsApplication.services.generator.food
 {

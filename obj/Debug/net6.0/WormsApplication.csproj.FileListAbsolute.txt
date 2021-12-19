@@ -83,4 +83,3 @@ C:\Users\ACER\RiderProjects\WormsApplication\bin\Debug\net6.0\System.Diagnostics
 C:\Users\ACER\RiderProjects\WormsApplication\bin\Debug\net6.0\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\ACER\RiderProjects\WormsApplication\bin\Debug\net6.0\EntitiesLibrary.dll
 C:\Users\ACER\RiderProjects\WormsApplication\bin\Debug\net6.0\EntitiesLibrary.pdb
-C:\Users\ACER\RiderProjects\WormsApplication\obj\Debug\net6.0\WormsApplication.csproj.CopyComplete

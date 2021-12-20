@@ -15,7 +15,7 @@ namespace WormsApplication.services.way
         {
             string jsonString = JsonSerializer.Serialize(worldState);
             HttpResponseMessage response = await new HttpClient().PostAsync(
-                $"http://localhost:5000/worms/{worm.Name}/getAction",
+                $"http://localhost:80/worms/{worm.Name}/getAction",
                 new StringContent(jsonString, Encoding.UTF8, "application/json"));
             return response.Content.ReadFromJsonAsync<Command>().Result;
         }

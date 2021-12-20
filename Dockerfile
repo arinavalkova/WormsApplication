@@ -6,6 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["WormsWeb/WormsWeb.csproj", "WormsWeb/"]
+COPY ["EntitiesLibrary/EntitiesLibrary.csproj", "EntitiesLibrary/"]
 RUN dotnet restore "WormsWeb/WormsWeb.csproj"
 COPY . .
 WORKDIR "/src/WormsWeb"

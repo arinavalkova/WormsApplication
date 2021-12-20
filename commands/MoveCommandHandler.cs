@@ -3,17 +3,17 @@ using WormsApplication.services.logger;
 
 namespace WormsApplication.commands
 {
-    public class MoveCommand : GeneralCommand, ICommand
+    public class MoveCommandHandler : GeneralCommand, ICommandHandler
     {
         private const int CountOfDecreaseVitality = 1;
         private readonly int _shiftX;
         private readonly int _shiftY;
-        private readonly World _world;
+        private readonly WorldHandler _worldHandler;
 
-        public MoveCommand(World world, ILogger fileLogger, int shiftX, int shiftY) 
-            : base(world, fileLogger, CountOfDecreaseVitality)
+        public MoveCommandHandler(WorldHandler worldHandler, ILogger fileLogger, int shiftX, int shiftY) 
+            : base(worldHandler, fileLogger, CountOfDecreaseVitality)
         {
-            _world = world;
+            _worldHandler = worldHandler;
             _shiftX = shiftX;
             _shiftY = shiftY;
         }
@@ -28,7 +28,7 @@ namespace WormsApplication.commands
 
         private void MoveCommands(Worm worm, int shiftX, int shiftY)
         {
-            _world.IncreaseVitality(worm,  _world.MoveWorm(worm, shiftX, shiftY));
+            _worldHandler.IncreaseVitality(worm,  _worldHandler.MoveWorm(worm, shiftX, shiftY));
         }
     }
 }

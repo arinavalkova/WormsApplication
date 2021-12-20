@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using WormsApplication.commands.parser;
-using WormsApplication.commands.reader;
 using WormsApplication.data.way;
 using WormsApplication.entities;
 using WormsApplication.services.generator.food;
@@ -19,7 +18,7 @@ namespace WormsApplication
         private const int CenterXCoord = 0;
         private const int CenterYCoord = 0;
 
-        private readonly World _world;
+        private readonly WorldHandler _worldHandler;
         private readonly CommandParser _commandParser;
         //private readonly WayReader _wayReader;
         private readonly IHostApplicationLifetime _appLifetime;
@@ -30,9 +29,9 @@ namespace WormsApplication
             ILogger fileLogger,
             IHostApplicationLifetime appLifetime)
         {
-            _world = new World(foodGenerator, namesGenerator,
+            _worldHandler = new WorldHandler(foodGenerator, namesGenerator,
                 new List<Worm> {new(namesGenerator.Generate(), CenterXCoord, CenterYCoord)});
-            _commandParser = new CommandParser(_world, fileLogger);
+            _commandParser = new CommandParser(_worldHandler, fileLogger);
            // _wayReader = wayReader;
             _appLifetime = appLifetime;
         }
@@ -41,15 +40,30 @@ namespace WormsApplication
         {
             // for (var i = 0; i < NumberOfMoves; i++)
             // {
-            //     var currentWorms = new List<Worm>(_world.GetWorms());
+            //     var currentWorms = new List<Worm>(_worldHandler.GetWorms());
             //     foreach (var worm in currentWorms)
             //     {
-            //         while (_commandParser.GetCommand(_wayReader.Walk(_world, worm)).Invoke(worm) == null) ;
+            //         while (_commandParser.Parse(_wayReader.Walk(_worldHandler, worm)).Invoke(worm) == null) ;
             //     }
             //
-            //     _world.GenerateFood();
+            //     _worldHandler.GenerateFood();
             // }
-            await new WayGetter().Get(_world.GetWorldState(), _world.GetWorldState().Worms[0]);
+            WayGetter wayGetter = new();
+            for (var i = 0; i < NumberOfMoves; i++)
+            {
+                var currentWormsList = new List<Worm>(_worldHandler.GetWorms());
+                foreach (var worm in currentWormsList)
+                {
+                    while (true)
+                    {
+                        var way = await wayGetter.Get(_worldHandler.GetWorldState(), worm);
+                        if (way == null) Console.WriteLine("Bad command!");
+                        if (_commandParser.Parse(way!).Invoke(worm) != null) break;
+                    }
+                }
+                _worldHandler.GenerateFood();
+            }
+            //await new WayGetter().Get(_worldHandler.GetWorldState(), _worldHandler.GetWorldState().Worms[0]);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

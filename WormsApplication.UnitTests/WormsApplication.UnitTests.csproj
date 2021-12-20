@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\WormsApplication.csproj" />
+      <ProjectReference Include="..\WormsWeb\WormsWeb.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using EntitiesLibrary;
 using EntitiesLibrary.entities;
-using WormsApplication.commands.parser;
-using WormsApplication.data.way;
 using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 
 namespace WormsApplication
 {
-    public class World
+    public class WorldHandler
     {
+        private const int MinVitalityToGenerate = 10;
         private const int FoodVitality = 10;
         private const int NoVitality = 0;
-        private const int MinVitalityToGenerate = 10;
 
         private readonly NamesGenerator _namesGenerator;
         private readonly IFoodGenerator _foodGenerator;
 
-        private WorldState _worldState; 
+        private readonly WorldState _worldState; 
 
-        public World(IFoodGenerator foodGenerator, NamesGenerator namesGenerator, List<Worm> worms)
+        public WorldHandler(IFoodGenerator foodGenerator, NamesGenerator namesGenerator, List<Worm> worms)
         {
             _namesGenerator = namesGenerator;
             var foodList = new List<Food>();
@@ -170,98 +168,5 @@ namespace WormsApplication
                     return FoodVitality;
             return NoVitality;
         }
-
-        private int DistanceBetweenCells(int aX, int bX, int aY, int bY)
-        {
-            return Math.Abs(aX - bX) + Math.Abs(aY - bY);
-        }
-
-        public Commands FindCommandToMoveToNearestFood(Worm worm)
-        {
-            var minDistance = int.MaxValue;
-            Food? nearestFood = null;
-            var foods = GetFoods();
-            var vitality = worm.LifeStrength;
-            foreach (var food in foods)
-            {
-                var newDistance =
-                    DistanceBetweenCells(worm.Position.X, food.Position.X, worm.Position.Y, food.Position.Y);
-                if (!(newDistance < minDistance) ||
-                    vitality > minDistance && food.ExpiresIn + minDistance > 0) continue;
-                minDistance = newDistance;
-                nearestFood = food;
-            }
-
-            return nearestFood != null
-                ? FindCommandForWalkToCell(worm, nearestFood.Position.X, nearestFood.Position.Y)
-                : FindCommandForWalkToCell(worm, 0, 0);
-        }
-
-        private Commands FindCommandForWalkToCell(Worm worm, int x, int y)
-        {
-            if (x != worm.Position.X && x < worm.Position.X) return Commands.MoveLeft;
-            if (x != worm.Position.X && x > worm.Position.X) return Commands.MoveRight;
-            if (y != worm.Position.Y && y > worm.Position.Y) return Commands.MoveDown;
-            if (y != worm.Position.Y && y < worm.Position.Y) return Commands.MoveUp;
-            return Commands.Nothing;
-        }
-
-        public Commands StartGame(Worm worm)
-        {
-            var minDistance = int.MaxValue;
-            Food? nearestFood = null;
-            var foods = new List<Food>(GetFoods());
-            var vitality = worm.LifeStrength;
-            foreach (var food in foods)
-            {
-                var newDistance =
-                    DistanceBetweenCells(worm.Position.X, food.Position.X, worm.Position.Y, food.Position.Y);
-                if (!(newDistance < minDistance) ||
-                    vitality > minDistance && food.ExpiresIn + minDistance > 0) continue;
-                minDistance = newDistance;
-                nearestFood = food;
-            }
-
-            if (worm.LifeStrength > minDistance + MinVitalityToGenerate)
-            {
-                foods.Remove(nearestFood);
-                return FindGenerateCommand(worm, foods);
-            }
-
-            return nearestFood != null
-                ? FindCommandForWalkToCell(worm, nearestFood.Position.X, nearestFood.Position.Y)
-                : FindCommandForWalkToCell(worm, 0, 0);
-        }
-
-        private Commands FindGenerateCommand(Worm worm, List<Food> foods)
-        {
-            var minDistance = int.MaxValue;
-            Food? nearestFood = null;
-            var vitality = worm.LifeStrength;
-            foreach (var food in foods)
-            {
-                var newDistance =
-                    DistanceBetweenCells(worm.Position.X, food.Position.X, worm.Position.Y, food.Position.Y);
-                if (!(newDistance < minDistance) ||
-                    vitality > minDistance && food.ExpiresIn + minDistance > 0) continue;
-                minDistance = newDistance;
-                nearestFood = food;
-            }
-
-            return _moveToGenerateCommand[
-                nearestFood != null
-                    ? FindCommandForWalkToCell(worm, nearestFood.Position.X, nearestFood.Position.Y)
-                    : FindCommandForWalkToCell(worm, 0, 0)
-            ];
-        }
-
-        private readonly Dictionary<Commands, Commands> _moveToGenerateCommand = new()
-        {
-            [Commands.MoveLeft] = Commands.GenerateLeft,
-            [Commands.MoveRight] = Commands.GenerateRight,
-            [Commands.MoveUp] = Commands.GenerateUp,
-            [Commands.MoveDown] = Commands.GenerateDown,
-            [Commands.Nothing] = Commands.GenerateUp
-        };
     }
 }

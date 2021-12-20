@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using WormsApplication.commands.parser;
-using WormsApplication.commands.reader;
 using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 using WormsApplication.services.logger;
+using WormsWeb.way;
+using WormsWeb.way.type;
 
 namespace WormsApplication.UnitTests
 {
@@ -20,11 +21,11 @@ namespace WormsApplication.UnitTests
             var firstFoodCoord = new Position {X = 2, Y = 3};
             var secondFoodCoord = new Position {X = -3, Y = -4};
             var foodGenerator = new CustomFoodGenerator(new List<Position> {firstFoodCoord, secondFoodCoord});
-            var wayReader = new WayReader(ReadingWays.NearestFood);
-            var world = new World(foodGenerator, namesGenerator, new List<Worm> {worm});
+            var wayReader = new WayManager(WayType.NearestFood);
+            var world = new WorldHandler(foodGenerator, namesGenerator, new List<Worm> {worm});
             var commandParser = new CommandParser(world, new MockLogger());
             for (var i = 0; i < movesToNearestFood; i++)
-                while (commandParser.GetCommand(wayReader.Walk(world, worm)).Invoke(worm) == null)
+                while (commandParser.Parse(wayReader.GetWayCommand(world.GetWorldState(), worm)).Invoke(worm) == null)
                     ;
             Assert.AreEqual(new Position {X = worm.Position.X, Y = worm.Position.Y}, firstFoodCoord);
         }

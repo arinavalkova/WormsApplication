@@ -11,18 +11,18 @@ namespace WormsApplication.services.logger
             if (File.Exists(FilePath)) File.Delete(FilePath);
         }
 
-        public void Log(World world)
+        public void Log(WorldHandler worldHandler)
         {
-            var worms = world.GetWorms();
+            var worms = worldHandler.GetWorms();
             using (var streamWriter = new StreamWriter(FilePath, true))
             {
-                streamWriter.Write($"{world.GetWorms().Count}  Worms:[");
+                streamWriter.Write($"{worldHandler.GetWorms().Count}  Worms:[");
                 foreach (var worm in worms)
                 {
                     streamWriter.Write($"{worm.Name}-{worm.LifeStrength}({worm.Position.X},{worm.Position.Y})");
                 }
 
-                var foods = world.GetFoods();
+                var foods = worldHandler.GetFoods();
                 streamWriter.Write($"], Food:[");
                 foreach (var food in foods)
                 {

@@ -3,16 +3,16 @@ using WormsApplication.services.logger;
 
 namespace WormsApplication.commands
 {
-    public class GenerateCommand : GeneralCommand, ICommand
+    public class GenerateCommandHandler : GeneralCommand, ICommandHandler
     {
         private const int CountOfDecreaseVitality = 10;
         private readonly int _shiftX;
         private readonly int _shiftY;
-        private readonly World _world;
-        public GenerateCommand(World world, ILogger fileLogger, int shiftX, int shiftY) 
-            : base(world, fileLogger, CountOfDecreaseVitality)
+        private readonly WorldHandler _worldHandler;
+        public GenerateCommandHandler(WorldHandler worldHandler, ILogger fileLogger, int shiftX, int shiftY) 
+            : base(worldHandler, fileLogger, CountOfDecreaseVitality)
         {
-            _world = world;
+            _worldHandler = worldHandler;
             _shiftX = shiftX;
             _shiftY = shiftY;
         }
@@ -26,7 +26,7 @@ namespace WormsApplication.commands
 
         private Worm GenerateCommands(Worm worm, int shiftX, int shiftY)
         {
-            return _world.GenerateNewWorm(worm, shiftX, shiftY);
+            return _worldHandler.GenerateNewWorm(worm, shiftX, shiftY);
         }
     }
 }

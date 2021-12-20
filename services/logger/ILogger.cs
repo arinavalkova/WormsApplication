@@ -2,6 +2,6 @@
 {
     public interface ILogger
     {
-        public void Log(World world);
+        public void Log(WorldHandler worldHandler);
     }
 }

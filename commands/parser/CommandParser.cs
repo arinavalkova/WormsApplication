@@ -1,31 +1,30 @@
 ﻿using System.Collections.Generic;
-using WormsApplication.data.way;
+using EntitiesLibrary.entities.commands;
 using WormsApplication.services.logger;
 
 namespace WormsApplication.commands.parser
 {
     public class CommandParser
     {
-        private readonly Dictionary<Commands, ICommand> _dictionary;
+        private readonly Dictionary<Command, ICommandHandler> _dictionary;
 
-        public CommandParser(World world, ILogger fileLogger)
+        public CommandParser(WorldHandler worldHandler, ILogger fileLogger)
         {
-            var commandFactory = new CommandFactory(world, fileLogger);
-            _dictionary = new Dictionary<Commands, ICommand>
+            var commandFactory = new CommandFactory(worldHandler, fileLogger);
+            _dictionary = new Dictionary<Command, ICommandHandler>
             {
-                [Commands.MoveUp] = commandFactory.MoveUpCommand(),
-                [Commands.MoveDown] = commandFactory.MoveDownCommand(),
-                [Commands.MoveLeft] = commandFactory.MoveLeftCommand(),
-                [Commands.MoveRight] = commandFactory.MoveRightCommand(),
-                [Commands.Nothing] = commandFactory.NothingCommand(),
-                [Commands.GenerateUp] = commandFactory.GenerateUpCommand(),
-                [Commands.GenerateDown] = commandFactory.GenerateDownCommand(),
-                [Commands.GenerateLeft] = commandFactory.GenerateLeftCommand(),
-                [Commands.GenerateRight] = commandFactory.GenerateRightCommand()
+                [new Command {Direction = Direction.Up, Split = false}] = commandFactory.MoveUpCommand(),
+                [new Command {Direction = Direction.Down, Split = false}] = commandFactory.MoveDownCommand(),
+                [new Command {Direction = Direction.Left, Split = false}] = commandFactory.MoveLeftCommand(),
+                [new Command {Direction = Direction.Right, Split = false}] = commandFactory.MoveRightCommand(),
+                [new Command {Direction = null, Split = null}] = commandFactory.NothingCommand(),
+                [new Command {Direction = Direction.Up, Split = true}] = commandFactory.GenerateUpCommand(),
+                [new Command {Direction = Direction.Down, Split = true}] = commandFactory.GenerateDownCommand(),
+                [new Command {Direction = Direction.Left, Split = true}] = commandFactory.GenerateLeftCommand(),
+                [new Command {Direction = Direction.Right, Split = true}] = commandFactory.GenerateRightCommand()
             };
         }
-
-        public ICommand GetCommand(Commands command)
+        public ICommandHandler Parse(Command command)
         {
             try
             {
@@ -33,7 +32,7 @@ namespace WormsApplication.commands.parser
             }
             catch (KeyNotFoundException)
             {
-                return new BadCommand();
+                return new BadCommandHandler();
             }
         }
     }

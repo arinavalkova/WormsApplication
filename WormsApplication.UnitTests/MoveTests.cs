@@ -17,7 +17,7 @@ namespace WormsApplication.UnitTests
             var foodGenerator = new MockFoodGenerator();
             var namesGenerator = new NamesGenerator();
             var fileLogger = new MockLogger();
-            var dictionary = new Dictionary<Func<CommandFactory, MoveCommand>, Position>
+            var dictionary = new Dictionary<Func<CommandFactory, MoveCommandHandler>, Position>
             {
                 [factory => factory.MoveDownCommand()] = new() {X = 0, Y = 1},
                 [factory => factory.MoveUpCommand()] = new() {X = 0, Y = -1},
@@ -27,7 +27,7 @@ namespace WormsApplication.UnitTests
             foreach (var (command, coord) in dictionary)
             {
                 var worm = new Worm(namesGenerator.Generate(), 0, 0);
-                var world = new World(foodGenerator, namesGenerator, new List<Worm> {worm});
+                var world = new WorldHandler(foodGenerator, namesGenerator, new List<Worm> {worm});
                 command(new CommandFactory(world, fileLogger)).Invoke(worm);
                 Assert.AreEqual(new Position {X = worm.Position.X, Y = worm.Position.Y}, coord);
             }
@@ -42,7 +42,7 @@ namespace WormsApplication.UnitTests
             var foodCoord = new Position {X = 0, Y = 1};
             var namesGenerator = new NamesGenerator();
             var worm = new Worm(namesGenerator.Generate(), 0, 0);
-            var world = new World(
+            var world = new WorldHandler(
                 new CustomFoodGenerator(new List<Position> {foodCoord}),
                 namesGenerator,
                 new List<Worm> {worm}
@@ -59,7 +59,7 @@ namespace WormsApplication.UnitTests
             var namesGenerator = new NamesGenerator();
             var firstWorm = new Worm(namesGenerator.Generate(), 0, 0);
             var secondWorm = new Worm(namesGenerator.Generate(), 0, 1);
-            var world = new World(new MockFoodGenerator(), namesGenerator, new List<Worm> {firstWorm, secondWorm});
+            var world = new WorldHandler(new MockFoodGenerator(), namesGenerator, new List<Worm> {firstWorm, secondWorm});
             new CommandFactory(world, new MockLogger()).MoveDownCommand().Invoke(firstWorm);
             Assert.AreEqual(new Position {X = firstWorm.Position.X, Y = firstWorm.Position.Y},
                 new Position {X = 0, Y = 0});

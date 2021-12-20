@@ -4,58 +4,58 @@ namespace WormsApplication.commands
 {
     public class CommandFactory 
     {
-        private readonly World _world;
+        private readonly WorldHandler _worldHandler;
         private readonly ILogger _fileLogger;
 
-        public CommandFactory(World world, ILogger fileLogger)
+        public CommandFactory(WorldHandler worldHandler, ILogger fileLogger)
         {
-            _world = world;
+            _worldHandler = worldHandler;
             _fileLogger = fileLogger;
         }
 
-        public MoveCommand MoveDownCommand()
+        public MoveCommandHandler MoveDownCommand()
         {
-            return new MoveCommand(_world, _fileLogger, 0, 1);
+            return new MoveCommandHandler(_worldHandler, _fileLogger, 0, 1);
         }
 
-        public MoveCommand MoveUpCommand()
+        public MoveCommandHandler MoveUpCommand()
         {
-            return new MoveCommand(_world, _fileLogger, 0, -1);
+            return new MoveCommandHandler(_worldHandler, _fileLogger, 0, -1);
         }
 
-        public MoveCommand MoveLeftCommand()
+        public MoveCommandHandler MoveLeftCommand()
         {
-            return new MoveCommand(_world, _fileLogger, -1, 0);
+            return new MoveCommandHandler(_worldHandler, _fileLogger, -1, 0);
         }
 
-        public MoveCommand MoveRightCommand()
+        public MoveCommandHandler MoveRightCommand()
         {
-            return new MoveCommand(_world, _fileLogger, 1, 0);
+            return new MoveCommandHandler(_worldHandler, _fileLogger, 1, 0);
         }
 
-        public GenerateCommand GenerateDownCommand()
+        public GenerateCommandHandler GenerateDownCommand()
         {
-            return new GenerateCommand(_world, _fileLogger, 0, 1);
+            return new GenerateCommandHandler(_worldHandler, _fileLogger, 0, 1);
         }
 
-        public GenerateCommand GenerateUpCommand()
+        public GenerateCommandHandler GenerateUpCommand()
         {
-            return new GenerateCommand(_world, _fileLogger, 0, -1);
+            return new GenerateCommandHandler(_worldHandler, _fileLogger, 0, -1);
         }
 
-        public GenerateCommand GenerateLeftCommand()
+        public GenerateCommandHandler GenerateLeftCommand()
         {
-            return new GenerateCommand(_world, _fileLogger, -1, 0);
+            return new GenerateCommandHandler(_worldHandler, _fileLogger, -1, 0);
         }
 
-        public GenerateCommand GenerateRightCommand()
+        public GenerateCommandHandler GenerateRightCommand()
         {
-            return new GenerateCommand(_world, _fileLogger, 1, 0);
+            return new GenerateCommandHandler(_worldHandler, _fileLogger, 1, 0);
         }
 
-        public MoveCommand NothingCommand()
+        public MoveCommandHandler NothingCommand()
         {
-            return new MoveCommand(_world, _fileLogger, 0, 0);
+            return new MoveCommandHandler(_worldHandler, _fileLogger, 0, 0);
         }
     }
 }

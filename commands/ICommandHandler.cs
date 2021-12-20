@@ -2,7 +2,7 @@
 
 namespace WormsApplication.commands
 {
-    public interface ICommand
+    public interface ICommandHandler
     {
         public Worm? Invoke(Worm worm);
     }

@@ -3,7 +3,7 @@ using WormsApplication.entities;
 
 namespace WormsApplication.commands
 {
-    public class BadCommand : ICommand
+    public class BadCommandHandler : ICommandHandler
     {
         public Worm? Invoke(Worm worm)
         {

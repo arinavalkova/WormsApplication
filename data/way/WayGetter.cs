@@ -1,23 +1,23 @@
 ﻿using System;
-using System.IO;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using EntitiesLibrary.entities.commands;
 using WormsApplication.entities;
 
 namespace WormsApplication.data.way
 {
     public class WayGetter
     {
-        public async Task Get(WorldState worldState, Worm worm)
+        public async Task<Command?> Get(WorldState worldState, Worm worm)
         {
             string jsonString = JsonSerializer.Serialize(worldState);
-            HttpResponseMessage response = await new HttpClient().PostAsync("http://localhost:5000/worms/",
+            HttpResponseMessage response = await new HttpClient().PostAsync(
+                $"http://localhost:5000/worms/{worm.Name}/getAction",
                 new StringContent(jsonString, Encoding.UTF8, "application/json"));
-            Console.WriteLine(response);
-            //get request
-            //convert json to Way
+            return response.Content.ReadFromJsonAsync<Command>().Result;
         }
     }
 }

@@ -6,25 +6,25 @@ namespace WormsApplication.commands
     public class GeneralCommand 
     {
         private readonly ILogger _fileLogger;
-        private readonly World _world;
+        private readonly WorldHandler _worldHandler;
         private readonly int _countOfDecreaseVitality;
         
-        protected GeneralCommand(World world, ILogger fileLogger, int countOfDecreaseVitality)
+        protected GeneralCommand(WorldHandler worldHandler, ILogger fileLogger, int countOfDecreaseVitality)
         {
             _fileLogger = fileLogger;
-            _world = world;
+            _worldHandler = worldHandler;
             _countOfDecreaseVitality = countOfDecreaseVitality;
         }
 
         protected void GeneralEndMove(Worm worm)
         {
-            _world.DecreaseVitality(worm,_countOfDecreaseVitality);
-            _fileLogger.Log(_world);
+            _worldHandler.DecreaseVitality(worm,_countOfDecreaseVitality);
+            _fileLogger.Log(_worldHandler);
         }
 
         protected void GeneralStartMove(Worm worm)
         {
-            _world.IncreaseVitality(worm,  _world.EatFoodOnWormIfCan(worm));
+            _worldHandler.IncreaseVitality(worm,  _worldHandler.EatFoodOnWormIfCan(worm));
         }
     }
 }

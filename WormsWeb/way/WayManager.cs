@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using EntitiesLibrary;
+using EntitiesLibrary.entities;
 using EntitiesLibrary.entities.commands;
 using WormsApplication.entities;
 using WormsWeb.way.type;
@@ -13,21 +14,26 @@ namespace WormsWeb.way
 
         private readonly Dictionary<WayType, ITypeHandler> _wayHandler = new()
         {
-            //[WayType.Circle] = new CircleTypeHandler(),
+            [WayType.Circle] = new CircleTypeHandler(),
             [WayType.NearestFood] = new NearestFoodTypeHandler(),
             [WayType.Game] = new GameTypeHandler(),
         };
-        
+
         private static int _circleCommandListPosition = 0;
 
-        // private static readonly List<Command> CircleCommandList = new()
-        // {
-        //     Commands.MoveUp, Commands.MoveRight, 
-        //     Commands.MoveDown, Commands.MoveDown,
-        //     Commands.MoveLeft, Commands.MoveLeft, 
-        //     Commands.MoveUp, Commands.MoveUp, 
-        //     Commands.MoveRight, Commands.MoveDown
-        // };
+        private static readonly List<Command> CircleCommandList = new()
+        {
+            new Command {Direction = Direction.Up, Split = false},
+            new Command {Direction = Direction.Right, Split = false},
+            new Command {Direction = Direction.Down, Split = false},
+            new Command {Direction = Direction.Down, Split = false},
+            new Command {Direction = Direction.Left, Split = false},
+            new Command {Direction = Direction.Left, Split = false},
+            new Command {Direction = Direction.Up, Split = false},
+            new Command {Direction = Direction.Up, Split = false},
+            new Command {Direction = Direction.Right, Split = false},
+            new Command {Direction = Direction.Down, Split = false}
+        };
 
         public WayManager(WayType wayType)
         {
@@ -38,7 +44,7 @@ namespace WormsWeb.way
         {
             Worm? worm = null;
             var wormList = worldState.Worms;
-            foreach (var currentWorm in wormList)
+            foreach (var currentWorm in wormList!)
             {
                 if (currentWorm.Name == name)
                 {
@@ -50,8 +56,8 @@ namespace WormsWeb.way
             if (worm == null) return null;
             return _wayHandler[_wayType].Invoke(worldState, worm);
         }
-        
-        public Command? GetWayCommand(WorldState worldState, Worm worm)
+
+        public Command GetWayCommand(WorldState worldState, Worm worm)
         {
             return _wayHandler[_wayType].Invoke(worldState, worm);
         }
@@ -61,16 +67,16 @@ namespace WormsWeb.way
             public Command Invoke(WorldState worldState, Worm worm);
         }
 
-        // private class CircleTypeHandler : ITypeHandler
-        // {
-        //     public Command Invoke(WorldState worldState, Worm worm)
-        //     {
-        //         var command = CircleCommandList[_circleCommandListPosition];
-        //         if (_circleCommandListPosition + 1 == CircleCommandList.Count) _circleCommandListPosition = 0;
-        //         else _circleCommandListPosition++;
-        //         return command;
-        //     }
-        // }
+        private class CircleTypeHandler : ITypeHandler
+        {
+            public Command Invoke(WorldState worldState, Worm worm)
+            {
+                var command = CircleCommandList[_circleCommandListPosition];
+                if (_circleCommandListPosition + 1 == CircleCommandList.Count) _circleCommandListPosition = 0;
+                else _circleCommandListPosition++;
+                return command;
+            }
+        }
 
         private class NearestFoodTypeHandler : ITypeHandler
         {

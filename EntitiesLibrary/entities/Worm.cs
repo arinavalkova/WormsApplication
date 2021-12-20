@@ -1,25 +1,24 @@
 ﻿using System.Text.Json.Serialization;
+using EntitiesLibrary.entities;
 
 namespace WormsApplication.entities
 {
     public class Worm
     {
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
-        [JsonPropertyName("lifeStrength")]
-        public int LifeStrength { get; set; }
-        [JsonPropertyName("position")]
-        public Position Position { get; set; }
-        
+        [JsonPropertyName("name")] public string Name { get; set; }
+        [JsonPropertyName("lifeStrength")] public int LifeStrength { get; set; }
+        [JsonPropertyName("position")] public Position Position { get; set; }
+
         private static readonly int MaxLifeStrength = 10;
-        
+
         [JsonConstructor]
-        public Worm(string name, int lifeStrength, Position position){
+        public Worm(string name, int lifeStrength, Position position)
+        {
             Name = name;
             LifeStrength = lifeStrength;
             Position = position;
         }
-        
+
         public Worm(string name)
         {
             Name = name;
@@ -40,7 +39,7 @@ namespace WormsApplication.entities
             Position = new Position {X = x, Y = y};
             LifeStrength = lifeStrength;
         }
-        
+
         public void IncreaseLifeStrength(int count)
         {
             LifeStrength += count;
@@ -49,11 +48,6 @@ namespace WormsApplication.entities
         public void DecreaseLifeStrength(int count)
         {
             LifeStrength -= count;
-        }
-
-        public override string ToString()
-        {
-            return "Дракон: " + Name + " " + LifeStrength + " " + Position + "\n";
         }
     }
 }

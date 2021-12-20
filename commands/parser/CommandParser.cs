@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using EntitiesLibrary.entities.commands;
 using WormsApplication.services.logger;
+using WormsApplication.services.world;
 
 namespace WormsApplication.commands.parser
 {
@@ -24,6 +25,7 @@ namespace WormsApplication.commands.parser
                 [new Command {Direction = Direction.Right, Split = true}] = commandFactory.GenerateRightCommand()
             };
         }
+
         public ICommandHandler Parse(Command command)
         {
             try

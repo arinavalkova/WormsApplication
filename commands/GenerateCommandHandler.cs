@@ -1,5 +1,6 @@
 ﻿using WormsApplication.entities;
 using WormsApplication.services.logger;
+using WormsApplication.services.world;
 
 namespace WormsApplication.commands
 {
@@ -9,13 +10,15 @@ namespace WormsApplication.commands
         private readonly int _shiftX;
         private readonly int _shiftY;
         private readonly WorldHandler _worldHandler;
-        public GenerateCommandHandler(WorldHandler worldHandler, ILogger fileLogger, int shiftX, int shiftY) 
+
+        public GenerateCommandHandler(WorldHandler worldHandler, ILogger fileLogger, int shiftX, int shiftY)
             : base(worldHandler, fileLogger, CountOfDecreaseVitality)
         {
             _worldHandler = worldHandler;
             _shiftX = shiftX;
             _shiftY = shiftY;
         }
+
         public Worm Invoke(Worm worm)
         {
             GeneralStartMove(worm);

@@ -4,13 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using WormsApplication.commands.parser;
-using WormsApplication.data.way;
 using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 using WormsApplication.services.logger;
+using WormsApplication.services.way;
 
-namespace WormsApplication
+namespace WormsApplication.services.world
 {
     public class WorldSimulatorService : IHostedService
     {
@@ -20,34 +20,21 @@ namespace WormsApplication
 
         private readonly WorldHandler _worldHandler;
         private readonly CommandParser _commandParser;
-        //private readonly WayReader _wayReader;
         private readonly IHostApplicationLifetime _appLifetime;
 
         public WorldSimulatorService(IFoodGenerator foodGenerator,
             NamesGenerator namesGenerator,
-            //WayReader wayReader,
             ILogger fileLogger,
             IHostApplicationLifetime appLifetime)
         {
             _worldHandler = new WorldHandler(foodGenerator, namesGenerator,
                 new List<Worm> {new(namesGenerator.Generate(), CenterXCoord, CenterYCoord)});
             _commandParser = new CommandParser(_worldHandler, fileLogger);
-           // _wayReader = wayReader;
             _appLifetime = appLifetime;
         }
 
         private async Task Start()
         {
-            // for (var i = 0; i < NumberOfMoves; i++)
-            // {
-            //     var currentWorms = new List<Worm>(_worldHandler.GetWorms());
-            //     foreach (var worm in currentWorms)
-            //     {
-            //         while (_commandParser.Parse(_wayReader.Walk(_worldHandler, worm)).Invoke(worm) == null) ;
-            //     }
-            //
-            //     _worldHandler.GenerateFood();
-            // }
             WayGetter wayGetter = new();
             for (var i = 0; i < NumberOfMoves; i++)
             {
@@ -61,9 +48,9 @@ namespace WormsApplication
                         if (_commandParser.Parse(way!).Invoke(worm) != null) break;
                     }
                 }
+
                 _worldHandler.GenerateFood();
             }
-            //await new WayGetter().Get(_worldHandler.GetWorldState(), _worldHandler.GetWorldState().Worms[0]);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

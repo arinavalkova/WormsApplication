@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace WormsApplication.entities
+namespace EntitiesLibrary.entities
 {
     public class Position
     {
-        [JsonPropertyName("x")]
-        public int X { get; set; }
-        [JsonPropertyName("y")]
-        public int Y { get; set; }
-        
+        [JsonPropertyName("x")] public int X { get; set; }
+        [JsonPropertyName("y")] public int Y { get; set; }
+
         [JsonConstructor]
-        public Position(int x, int y){
+        public Position(int x, int y)
+        {
             X = x;
             Y = y;
         }
-        
-        public Position() {}
-        
+
+        public Position()
+        {
+        }
+
         private bool Equals(Position other)
         {
             return X == other.X && Y == other.Y;
@@ -37,7 +38,7 @@ namespace WormsApplication.entities
 
         public override string ToString()
         {
-            return "[" + X + ", " + Y + "]";
+            return $"[{X},{Y}]";
         }
     }
 }

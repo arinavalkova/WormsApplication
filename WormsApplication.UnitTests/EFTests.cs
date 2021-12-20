@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EntitiesLibrary.entities;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NUnit.Framework;
 using WormsApplication.data;
 using WormsApplication.data.behavior;
+using WormsApplication.data.behavior.contexts;
 using WormsApplication.data.behavior.entity;
 using WormsApplication.entities;
 using WormsApplication.services.generator.food;
@@ -13,7 +15,7 @@ namespace WormsApplication.UnitTests
 {
     public class EFTests
     {
-        private List<Position> _listOfCoords;
+        private List<Position>? _listOfCoords;
         [Test]
         public void BehaviorGenerateTest_NewBehavior_BehaviorInDatabase()
         {
@@ -40,7 +42,7 @@ namespace WormsApplication.UnitTests
             for (var i = 0; i < 100; i++)
             {
                 var coord = context.Coords.FirstOrDefault(coords => coords.Move == i && coords.BehaviorId == behaviorId);
-                Assert.AreEqual(new Position {X = coord!.X, Y = coord.Y}, _listOfCoords[i]);
+                Assert.AreEqual(new Position {X = coord!.X, Y = coord.Y}, _listOfCoords![i]);
             }
         }
     }

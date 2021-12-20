@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using EntitiesLibrary.entities;
 using NUnit.Framework;
 using WormsApplication.commands;
 using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 using WormsApplication.services.logger;
+using WormsApplication.services.world;
 
 namespace WormsApplication.UnitTests
 {
@@ -59,7 +61,8 @@ namespace WormsApplication.UnitTests
             var namesGenerator = new NamesGenerator();
             var firstWorm = new Worm(namesGenerator.Generate(), 0, 0);
             var secondWorm = new Worm(namesGenerator.Generate(), 0, 1);
-            var world = new WorldHandler(new MockFoodGenerator(), namesGenerator, new List<Worm> {firstWorm, secondWorm});
+            var world = new WorldHandler(new MockFoodGenerator(), namesGenerator,
+                new List<Worm> {firstWorm, secondWorm});
             new CommandFactory(world, new MockLogger()).MoveDownCommand().Invoke(firstWorm);
             Assert.AreEqual(new Position {X = firstWorm.Position.X, Y = firstWorm.Position.Y},
                 new Position {X = 0, Y = 0});

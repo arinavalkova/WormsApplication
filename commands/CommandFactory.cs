@@ -1,8 +1,9 @@
 ﻿using WormsApplication.services.logger;
+using WormsApplication.services.world;
 
 namespace WormsApplication.commands
 {
-    public class CommandFactory 
+    public class CommandFactory
     {
         private readonly WorldHandler _worldHandler;
         private readonly ILogger _fileLogger;

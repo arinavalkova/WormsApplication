@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EntitiesLibrary.entities;
 using WormsApplication.entities;
 
 namespace WormsApplication.data.behavior
@@ -14,8 +15,9 @@ namespace WormsApplication.data.behavior
             {
                 var x = Convert.ToInt32(coordLine.Split(',')[0]);
                 var y = Convert.ToInt32(coordLine.Split(',')[1]);
-                listOfCoords.Add(new Position() {X = x, Y = y});
+                listOfCoords.Add(new Position {X = x, Y = y});
             }
+
             return listOfCoords;
         }
     }

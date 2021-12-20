@@ -14,16 +14,12 @@ namespace WormsApplication.services.generator.food
             _listOfCoord = listOfCoord;
         }
 
-        public Food Generate()
+        public Food? Generate()
         {
             if (_currentPosition == _listOfCoord.Count) return null;
             var newFood = new Food(_listOfCoord[_currentPosition].X, _listOfCoord[_currentPosition].Y);
             _currentPosition++;
             return newFood;
-        }
-
-        public void AddContext()
-        {
         }
     }
 }

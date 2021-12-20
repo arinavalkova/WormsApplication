@@ -18,6 +18,7 @@ namespace WormsApplication.services.generator.name
             _notUsedList = new List<int>();
             for (var i = 0; i < CountOfWormsInFile; i++) _notUsedList.Add(i);
         }
+
         public string Generate()
         {
             var randomId = new Random().Next(0, _notUsedList.Count - 1);

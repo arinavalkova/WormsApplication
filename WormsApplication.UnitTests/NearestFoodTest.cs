@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using EntitiesLibrary.entities;
 using NUnit.Framework;
 using WormsApplication.commands.parser;
 using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 using WormsApplication.services.logger;
+using WormsApplication.services.world;
 using WormsWeb.way;
 using WormsWeb.way.type;
 
@@ -25,7 +27,7 @@ namespace WormsApplication.UnitTests
             var world = new WorldHandler(foodGenerator, namesGenerator, new List<Worm> {worm});
             var commandParser = new CommandParser(world, new MockLogger());
             for (var i = 0; i < movesToNearestFood; i++)
-                while (commandParser.Parse(wayReader.GetWayCommand(world.GetWorldState(), worm)).Invoke(worm) == null)
+                while (commandParser.Parse(wayReader.GetWayCommand(world.GetWorldState(), worm)!).Invoke(worm) == null)
                     ;
             Assert.AreEqual(new Position {X = worm.Position.X, Y = worm.Position.Y}, firstFoodCoord);
         }

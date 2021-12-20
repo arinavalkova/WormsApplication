@@ -2,9 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WormsApplication.data;
+using WormsApplication.data.behavior;
+using WormsApplication.data.behavior.contexts;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 using WormsApplication.services.logger;
+using WormsApplication.services.world;
 
 namespace WormsApplication
 {
@@ -12,6 +15,7 @@ namespace WormsApplication
     {
         private const string ConnectionString =
             @"Host=localhost;Port=5432;Database=wormsDB;Username=postgres;Password=westa";
+
         private const string BehaviorName = "first";
 
         public static void Main(string[] args)
@@ -32,7 +36,6 @@ namespace WormsApplication
                     services.AddSingleton<IFoodGenerator, FoodGetter>(
                         provider => new FoodGetter(BehaviorName, provider.GetService<SqlServerBehaviorContext>()!));
                     services.AddSingleton<NamesGenerator>();
-                    //services.AddSingleton(_ => new WayReader(ReadingWays.Game));
                     services.AddSingleton<ILogger, FileLogger>();
                 });
         }

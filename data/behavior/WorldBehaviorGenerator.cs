@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using EntitiesLibrary.entities;
-using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 
 namespace WormsApplication.data.behavior
@@ -37,9 +36,9 @@ namespace WormsApplication.data.behavior
             return resultListOfCoord;
         }
 
-        private Food FindLastFood(Food food, List<Food> list)
+        private Food? FindLastFood(Food food, List<Food> list)
         {
-            Food answerFood = null;
+            Food? answerFood = null;
             foreach (var currentFood in list)
                 if (currentFood.Position.X == food.Position.X && currentFood.Position.Y == food.Position.Y)
                     answerFood = currentFood;

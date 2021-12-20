@@ -1,4 +1,6 @@
-﻿namespace WormsApplication.services.logger
+﻿using WormsApplication.services.world;
+
+namespace WormsApplication.services.logger
 {
     public interface ILogger
     {

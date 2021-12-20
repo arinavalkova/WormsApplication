@@ -1,5 +1,6 @@
 ﻿using WormsApplication.entities;
 using WormsApplication.services.logger;
+using WormsApplication.services.world;
 
 namespace WormsApplication.commands
 {
@@ -10,7 +11,7 @@ namespace WormsApplication.commands
         private readonly int _shiftY;
         private readonly WorldHandler _worldHandler;
 
-        public MoveCommandHandler(WorldHandler worldHandler, ILogger fileLogger, int shiftX, int shiftY) 
+        public MoveCommandHandler(WorldHandler worldHandler, ILogger fileLogger, int shiftX, int shiftY)
             : base(worldHandler, fileLogger, CountOfDecreaseVitality)
         {
             _worldHandler = worldHandler;
@@ -28,7 +29,7 @@ namespace WormsApplication.commands
 
         private void MoveCommands(Worm worm, int shiftX, int shiftY)
         {
-            _worldHandler.IncreaseVitality(worm,  _worldHandler.MoveWorm(worm, shiftX, shiftY));
+            _worldHandler.IncreaseVitality(worm, _worldHandler.MoveWorm(worm, shiftX, shiftY));
         }
     }
 }

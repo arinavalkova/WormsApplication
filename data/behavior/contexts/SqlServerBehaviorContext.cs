@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WormsApplication.data.behavior.entity;
 
-namespace WormsApplication.data
+namespace WormsApplication.data.behavior.contexts
 {
     public class SqlServerBehaviorContext : DbContext
     {

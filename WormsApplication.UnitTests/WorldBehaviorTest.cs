@@ -15,8 +15,8 @@ namespace WormsApplication.UnitTests
             var worldBehaviorGenerator = new WorldBehaviorGenerator(foodGenerator);
             var listOfGeneratedCoords = worldBehaviorGenerator.Generate(countOfMoves);
             for (var i = 0; i < countOfMoves; i++)
-                for (var j = 0; j < countOfMoves && i != j; j++)
-                    Assert.AreEqual(!listOfGeneratedCoords[i].Equals(listOfGeneratedCoords[j]) || i - j >= 10, true);
+            for (var j = 0; j < countOfMoves && i != j; j++)
+                Assert.AreEqual(!listOfGeneratedCoords[i].Equals(listOfGeneratedCoords[j]) || i - j >= 10, true);
         }
 
         [Test]

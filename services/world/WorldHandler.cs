@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EntitiesLibrary;
 using EntitiesLibrary.entities;
 using WormsApplication.entities;
 using WormsApplication.services.generator.food;
 using WormsApplication.services.generator.name;
 
-namespace WormsApplication
+namespace WormsApplication.services.world
 {
     public class WorldHandler
     {
@@ -38,7 +37,7 @@ namespace WormsApplication
             return _worldState;
         }
 
-        public List<Worm> GetWorms()
+        public List<Worm>? GetWorms()
         {
             return _worldState.Worms;
         }
@@ -46,7 +45,7 @@ namespace WormsApplication
         private bool IsCellNotWorm(int x, int y)
         {
             var worms = GetWorms();
-            return worms.All(worm => worm.Position.X != x || worm.Position.Y != y);
+            return worms == null || worms.All(worm => worm.Position.X != x || worm.Position.Y != y);
         }
 
         public int MoveWorm(Worm worm, int shiftX, int shiftY)
@@ -61,7 +60,7 @@ namespace WormsApplication
 
         public void DecreaseVitality(Worm worm, int countOfDecrease)
         {
-            if (worm.LifeStrength <= 0) _worldState.Worms.Remove(worm);
+            if (worm.LifeStrength <= 0) _worldState.Worms!.Remove(worm);
             else worm.DecreaseLifeStrength(countOfDecrease);
         }
 
@@ -69,12 +68,13 @@ namespace WormsApplication
         {
             var food = IsFoodCell(x, y);
             if (food == null) return false;
-            _worldState.Food.Remove(food);
+            _worldState.Food!.Remove(food);
             return true;
         }
 
         private Food? IsFoodCell(int x, int y)
         {
+            if (_worldState.Food == null) return null;
             foreach (var food in _worldState.Food.Where(food => food.Position.X == x && food.Position.Y == y))
                 return food;
             return null;
@@ -92,7 +92,7 @@ namespace WormsApplication
             AddNewFood(GetNewFood());
         }
 
-        private Food? GetNewFood()
+        private Food GetNewFood()
         {
             Food? newFood = null;
             var isEmpty = false;
@@ -100,28 +100,29 @@ namespace WormsApplication
             while (!isEmpty)
             {
                 newFood = _foodGenerator.Generate();
-                if (newFood == null) return null;
                 isEmpty = true;
                 var foodList = _worldState.Food;
+                if (foodList == null) break;
                 foreach (var food in foodList)
                 {
-                    if (food.Position.X != newFood.Position.X || food.Position.Y != newFood.Position.Y) continue;
+                    if (food.Position.X != newFood!.Position.X || food.Position.Y != newFood.Position.Y) continue;
                     isEmpty = false;
                     break;
                 }
             }
 
-            return newFood;
+            return newFood!;
         }
 
         private void AddNewFood(Food newFood)
         {
-            if (newFood != null) _worldState.Food.Add(newFood);
+            _worldState.Food!.Add(newFood);
         }
 
         private void DeleteNotFreshFood()
         {
             var foodList = _worldState.Food;
+            if (foodList == null) return;
             foreach (var food in foodList)
             {
                 if (food.ExpiresIn == 0)
@@ -135,10 +136,11 @@ namespace WormsApplication
         private void IncreaseFoodAge()
         {
             var foodList = _worldState.Food;
+            if (foodList == null) return;
             foreach (var food in foodList) food.DecreaseExpiresIn();
         }
 
-        public List<Food> GetFoods()
+        public List<Food>? GetFoods()
         {
             return _worldState.Food;
         }
@@ -156,13 +158,14 @@ namespace WormsApplication
         private Worm CreateNewWorm(int x, int y)
         {
             Worm worm = new(_namesGenerator.Generate(), x, y);
-            _worldState.Worms.Add(worm);
+            _worldState.Worms!.Add(worm);
             return worm;
         }
 
         public int EatFoodOnWormIfCan(Worm worm)
         {
             var foodList = _worldState.Food;
+            if (foodList == null) return NoVitality;
             foreach (var food in foodList)
                 if (food.Position.X == worm.Position.X && food.Position.Y == worm.Position.Y)
                     return FoodVitality;

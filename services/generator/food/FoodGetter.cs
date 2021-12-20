@@ -2,6 +2,8 @@
 using System.Linq;
 using EntitiesLibrary.entities;
 using WormsApplication.data;
+using WormsApplication.data.behavior;
+using WormsApplication.data.behavior.contexts;
 using WormsApplication.data.behavior.entity;
 using WormsApplication.entities;
 
@@ -10,7 +12,7 @@ namespace WormsApplication.services.generator.food
     public class FoodGetter : IFoodGenerator
     {
         private int _currentMove = 0;
-        private SqlServerBehaviorContext _serverBehaviorContext;
+        private readonly SqlServerBehaviorContext _serverBehaviorContext;
         private readonly string _name;
 
         public FoodGetter(string name, SqlServerBehaviorContext serverBehaviorContext)

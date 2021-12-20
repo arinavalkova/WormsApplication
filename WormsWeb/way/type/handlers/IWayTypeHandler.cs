@@ -1,4 +1,5 @@
 ﻿using EntitiesLibrary;
+using EntitiesLibrary.entities;
 using EntitiesLibrary.entities.commands;
 using WormsApplication.entities;
 

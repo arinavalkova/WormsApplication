@@ -7,6 +7,6 @@ namespace WormsWeb.way.type.handlers
 {
     public interface IWayTypeHandler
     {
-        public Command GetCommand(WorldState worldState, Worm worm);
+        public Command GetCommand(WorldState worldState, Worm worm, int step, int run);
     }
 }

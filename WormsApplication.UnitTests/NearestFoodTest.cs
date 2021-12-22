@@ -27,7 +27,8 @@ namespace WormsApplication.UnitTests
             var world = new WorldHandler(foodGenerator, namesGenerator, new List<Worm> {worm});
             var commandParser = new CommandParser(world, new MockLogger());
             for (var i = 0; i < movesToNearestFood; i++)
-                while (commandParser.Parse(wayReader.GetWayCommand(world.GetWorldState(), worm)!).Invoke(worm) == null)
+                while (commandParser.Parse(wayReader.GetWayCommand(world.GetWorldState(), worm, 0, 0)!).Invoke(worm) ==
+                       null)
                     ;
             Assert.AreEqual(new Position {X = worm.Position.X, Y = worm.Position.Y}, firstFoodCoord);
         }

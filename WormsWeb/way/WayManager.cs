@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EntitiesLibrary;
 using EntitiesLibrary.entities;
 using EntitiesLibrary.entities.commands;
@@ -23,16 +24,16 @@ namespace WormsWeb.way
 
         private static readonly List<Command> CircleCommandList = new()
         {
-            new Command {Direction = Direction.Up, Split = false},
-            new Command {Direction = Direction.Right, Split = false},
-            new Command {Direction = Direction.Down, Split = false},
-            new Command {Direction = Direction.Down, Split = false},
-            new Command {Direction = Direction.Left, Split = false},
-            new Command {Direction = Direction.Left, Split = false},
-            new Command {Direction = Direction.Up, Split = false},
-            new Command {Direction = Direction.Up, Split = false},
-            new Command {Direction = Direction.Right, Split = false},
-            new Command {Direction = Direction.Down, Split = false}
+            new Command {Direction = Direction.UP, Split = false},
+            new Command {Direction = Direction.RIGHT, Split = false},
+            new Command {Direction = Direction.DOWN, Split = false},
+            new Command {Direction = Direction.DOWN, Split = false},
+            new Command {Direction = Direction.LEFT, Split = false},
+            new Command {Direction = Direction.LEFT, Split = false},
+            new Command {Direction = Direction.UP, Split = false},
+            new Command {Direction = Direction.UP, Split = false},
+            new Command {Direction = Direction.RIGHT, Split = false},
+            new Command {Direction = Direction.DOWN, Split = false}
         };
 
         public WayManager(WayType wayType)
@@ -40,36 +41,30 @@ namespace WormsWeb.way
             _wayType = wayType;
         }
 
-        public Command? GetWayCommand(WorldState worldState, string name)
+        public Command? GetWayCommand(WorldState worldState, string name, int step, int run)
         {
-            Worm? worm = null;
             var wormList = worldState.Worms;
-            foreach (var currentWorm in wormList!)
-            {
-                if (currentWorm.Name == name)
-                {
-                    worm = currentWorm;
-                    break;
-                }
-            }
+            var worm = wormList!.FirstOrDefault(currentWorm => currentWorm.Name == name);
 
-            if (worm == null) return null;
-            return _wayHandler[_wayType].Invoke(worldState, worm);
+            return worm == null ?
+                null 
+                : 
+                _wayHandler[_wayType].Invoke(worldState, worm, step, run);
         }
 
-        public Command GetWayCommand(WorldState worldState, Worm worm)
+        public Command GetWayCommand(WorldState worldState, Worm worm, int step, int run)
         {
-            return _wayHandler[_wayType].Invoke(worldState, worm);
+            return _wayHandler[_wayType].Invoke(worldState, worm, step, run);
         }
 
         private interface ITypeHandler
         {
-            public Command Invoke(WorldState worldState, Worm worm);
+            public Command Invoke(WorldState worldState, Worm worm, int step, int run);
         }
 
         private class CircleTypeHandler : ITypeHandler
         {
-            public Command Invoke(WorldState worldState, Worm worm)
+            public Command Invoke(WorldState worldState, Worm worm, int step, int run)
             {
                 var command = CircleCommandList[_circleCommandListPosition];
                 if (_circleCommandListPosition + 1 == CircleCommandList.Count) _circleCommandListPosition = 0;
@@ -80,17 +75,17 @@ namespace WormsWeb.way
 
         private class NearestFoodTypeHandler : ITypeHandler
         {
-            public Command Invoke(WorldState worldState, Worm worm)
+            public Command Invoke(WorldState worldState, Worm worm, int step, int run)
             {
-                return new NearestFoodHandler().GetCommand(worldState, worm);
+                return new NearestFoodHandler().GetCommand(worldState, worm, step, run);
             }
         }
 
         private class GameTypeHandler : ITypeHandler
         {
-            public Command Invoke(WorldState worldState, Worm worm)
+            public Command Invoke(WorldState worldState, Worm worm, int step, int run)
             {
-                return new GameHandler().GetCommand(worldState, worm);
+                return new GameHandler().GetCommand(worldState, worm, step, run);
             }
         }
     }

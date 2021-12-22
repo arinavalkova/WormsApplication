@@ -8,6 +8,11 @@ using WormsWeb.way.type;
 
 namespace WormsWeb.Controllers
 {
+
+    class Empty
+    {
+    }
+
     [ApiController]
     [Route("worms")]
     public class WormsWebController : ControllerBase
@@ -16,10 +21,16 @@ namespace WormsWeb.Controllers
 
         [HttpPost]
         [Route("{name}/getAction")]
-        public async Task<Command?> GetWay(WorldState worldState, string name, int step, int run)
+        public async Task<object?> GetWay(WorldState worldState, string name, int step, int run)
         {
-            var command = new WayManager(WayType).GetWayCommand(worldState, name);
+            var command = new WayManager(WayType).GetWayCommand(worldState, name, step, run);
             if (command == null) Console.WriteLine("Bad worm name!");
+            // if (command.Direction == null)
+            // {
+            //     Console.WriteLine("Empty");
+            //     return new JsonResult("{}");
+            // }
+           // Console.WriteLine(command.Direction);
             return command;
         }
     }

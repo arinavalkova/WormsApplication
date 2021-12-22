@@ -8,7 +8,7 @@ namespace WormsWeb.way.type.handlers
 {
     public class NearestFoodHandler : WayHandler, IWayTypeHandler
     {
-        public Command GetCommand(WorldState worldState, Worm worm)
+        public Command GetCommand(WorldState worldState, Worm worm, int step, int run)
         {
             var minDistance = int.MaxValue;
             Food? nearestFood = null;

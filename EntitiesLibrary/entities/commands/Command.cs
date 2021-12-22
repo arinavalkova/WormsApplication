@@ -5,9 +5,12 @@ namespace EntitiesLibrary.entities.commands
 {
     public class Command
     {
-        [JsonPropertyName("direction")] public Direction? Direction { get; set; }
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        // [JsonPropertyName("direction")] 
+        public Direction? Direction { get; set; }
 
-        [JsonPropertyName("split")] public bool? Split { get; set; }
+        // [JsonPropertyName("split")] 
+        public bool? Split { get; set; }
 
         private bool Equals(Command other)
         {

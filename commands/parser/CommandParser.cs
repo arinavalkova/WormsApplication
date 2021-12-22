@@ -14,15 +14,15 @@ namespace WormsApplication.commands.parser
             var commandFactory = new CommandFactory(worldHandler, fileLogger);
             _dictionary = new Dictionary<Command, ICommandHandler>
             {
-                [new Command {Direction = Direction.Up, Split = false}] = commandFactory.MoveUpCommand(),
-                [new Command {Direction = Direction.Down, Split = false}] = commandFactory.MoveDownCommand(),
-                [new Command {Direction = Direction.Left, Split = false}] = commandFactory.MoveLeftCommand(),
-                [new Command {Direction = Direction.Right, Split = false}] = commandFactory.MoveRightCommand(),
+                [new Command {Direction = Direction.UP, Split = false}] = commandFactory.MoveUpCommand(),
+                [new Command {Direction = Direction.DOWN, Split = false}] = commandFactory.MoveDownCommand(),
+                [new Command {Direction = Direction.LEFT, Split = false}] = commandFactory.MoveLeftCommand(),
+                [new Command {Direction = Direction.RIGHT, Split = false}] = commandFactory.MoveRightCommand(),
                 [new Command {Direction = null, Split = null}] = commandFactory.NothingCommand(),
-                [new Command {Direction = Direction.Up, Split = true}] = commandFactory.GenerateUpCommand(),
-                [new Command {Direction = Direction.Down, Split = true}] = commandFactory.GenerateDownCommand(),
-                [new Command {Direction = Direction.Left, Split = true}] = commandFactory.GenerateLeftCommand(),
-                [new Command {Direction = Direction.Right, Split = true}] = commandFactory.GenerateRightCommand()
+                [new Command {Direction = Direction.UP, Split = true}] = commandFactory.GenerateUpCommand(),
+                [new Command {Direction = Direction.DOWN, Split = true}] = commandFactory.GenerateDownCommand(),
+                [new Command {Direction = Direction.LEFT, Split = true}] = commandFactory.GenerateLeftCommand(),
+                [new Command {Direction = Direction.RIGHT, Split = true}] = commandFactory.GenerateRightCommand()
             };
         }
 

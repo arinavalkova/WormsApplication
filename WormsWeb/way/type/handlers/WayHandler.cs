@@ -14,15 +14,15 @@ namespace WormsWeb.way.type.handlers
 
         private protected Command FindCommandForWalkToCell(Worm worm, int x, int y)
         {
-            if (x != worm.Position.X && x < worm.Position.X)
-                return new Command {Direction = Direction.Left, Split = false};
-            if (x != worm.Position.X && x > worm.Position.X)
-                return new Command {Direction = Direction.Right, Split = false};
-            if (y != worm.Position.Y && y > worm.Position.Y)
-                return new Command {Direction = Direction.Down, Split = false};
-            if (y != worm.Position.Y && y < worm.Position.Y)
-                return new Command {Direction = Direction.Up, Split = false};
-            return new Command {Direction = null, Split = null};
+            if (x < worm.Position.X)
+                return new Command {Direction = Direction.LEFT, Split = false};
+            if (x > worm.Position.X)
+                return new Command {Direction = Direction.RIGHT, Split = false};
+            if (y < worm.Position.Y)
+                return new Command {Direction = Direction.DOWN, Split = false};
+            if (y > worm.Position.Y)
+                return new Command {Direction = Direction.UP, Split = false};
+            return new Command {Direction = Direction.DOWN, Split = false};
         }
     }
 }

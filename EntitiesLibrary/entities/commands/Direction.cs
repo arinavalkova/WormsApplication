@@ -1,10 +1,13 @@
-﻿namespace EntitiesLibrary.entities.commands
+﻿using System;
+using System.Runtime.Serialization;
+
+namespace EntitiesLibrary.entities.commands
 {
     public enum Direction
     {
-        Up,
-        Left,
-        Right,
-        Down
+        DOWN,
+        UP,
+        RIGHT,
+        LEFT
     }
 }

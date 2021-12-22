@@ -27,4 +27,16 @@ C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\obj\Debug\net6.0\WormsWeb.
 C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\obj\Debug\net6.0\WormsWeb.genruntimeconfig.cache
 C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\EntitiesLibrary.dll
 C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\EntitiesLibrary.pdb
-C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\obj\Debug\net6.0\WormsWeb.csproj.CopyComplete
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\System.Collections.Immutable.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\ACER\RiderProjects\WormsApplication\WormsWeb\bin\Debug\net6.0\System.Runtime.CompilerServices.Unsafe.dll

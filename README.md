@@ -174,3 +174,5 @@ Response format:
 { direction: "Up", split: true }
 
 **On the hundredth move, an average of 18 worms is obtained. Sandbox tested: https://sites.google.com/d/1ryKDnRZGG9D8LgloNvKsPly2z5WTWqUX/p/1Dfh44mCR9fAXGJGCQ0css2K2Z07R9PIB/edit**
+
+![](score5.PNG)
